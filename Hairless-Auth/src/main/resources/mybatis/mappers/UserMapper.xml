@@ -4,18 +4,45 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ljqiii.hairlessauth.dao.UserMapper">
 
-    <resultMap id="UserrMap" type="com.ljqiii.hairlesscommon.domain.User">
+    <resultMap id="UserMap" type="com.ljqiii.hairlesscommon.domain.User">
+        <id column="id" property="id"/>
+        <result column="username" property="userName"/>
+        <result column="nickname" property="nickName"/>
+        <result column="encodedpassword" property="encodedPassword"/>
+        <result column="email" property="eMail"/>
+        <result column="isaccountexpired" property="isAccountExpired"/>
+        <result column="isaccountlocked" property="isAccountLocked"/>
+        <result column="iscredentialsexpired" property="isCredentialsExpired"/>
+        <result column="isenabled" property="isEnabled"/>
 
+        <association property="authorities" javaType="java.util.List" select="selectAuthoritiesByUserId" column="id"/>
 
     </resultMap>
 
 
-
-    <select id="selectUserById" resultType="com.ljqiii.hairlesscommon.domain.User">
-
-
+    <select id="selectUserById" resultMap="UserMap">
+        select  * from user  where user.id=#{id,jdbcType=INTEGER};
     </select>
 
+
+    <select id="selectUserByUserName" resultMap="UserMap">
+        select  * from user  where user.username=#{username,jdbcType=VARCHAR};
+    </select>
+
+
+    <select id="selectAuthoritiesByUserId"
+            resultType="com.ljqiii.hairlesscommon.domain.Role">
+        select role.* from user,user_role,role where user.id=user_role.userid and user.id=#{userid} and role.id=user_role.userid
+    </select>
+
+    <delete id="deleteUser">
+        delete from  user  where id=#{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
+        insert into user (username,nickname,encodedpassword,email,isaccountexpired,isaccountlocked,iscredentialsexpired,isenabled)
+        values(#{userName},#{nickName},#{encodedPassword},#{eMail},false ,false ,false ,true)
+    </insert>
 
 
 </mapper>

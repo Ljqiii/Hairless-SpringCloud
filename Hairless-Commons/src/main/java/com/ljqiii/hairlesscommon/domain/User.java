@@ -24,9 +24,8 @@ public class User implements UserDetails {
     boolean isAccountLocked;
     boolean isCredentialsExpired;
     boolean isEnabled;
-    boolean isVip;
 
-    List<SimpleGrantedAuthority> authorities;
+    List<Role> authorities;
 
     @Override
     public String getPassword() {
@@ -53,4 +52,8 @@ public class User implements UserDetails {
         return !isCredentialsExpired;
     }
 
+    @Override
+    public boolean isEnabled(){
+        return this.isEnabled;
+    }
 }

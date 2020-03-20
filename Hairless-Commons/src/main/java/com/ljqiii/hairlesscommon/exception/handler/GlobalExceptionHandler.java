@@ -1,6 +1,7 @@
 package com.ljqiii.hairlesscommon.exception.handler;
 
 import com.ljqiii.hairlesscommon.enums.ResultEnum;
+import com.ljqiii.hairlesscommon.exception.UserException;
 import com.ljqiii.hairlesscommon.vo.ResultVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +52,14 @@ public class GlobalExceptionHandler {
     public ResultVO nullPointerExceptionHandler(NullPointerException e) {
         logger.error("NullPointerException", e);
         return new ResultVO<Void>(ResultEnum.SERVER_ERROR.getCode(), ResultEnum.SERVER_ERROR.getMessage(), null);
+    }
+
+
+    @ExceptionHandler(value = UserException.class)
+    @ResponseBody
+    public ResultVO UserExceptionHandler(UserException e) {
+        logger.error("UserException", e);
+        return new ResultVO<Void>(ResultEnum.SERVER_ERROR.getCode(), e.getMessage(), null);
     }
 
 }

@@ -66,13 +66,22 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         //http://localhost:8081/oauth/authorize?client_id=client1&client_secert=client1id&response_type=code
-        clients.inMemory().withClient("hairless")
+        clients.inMemory()
+                .withClient("hairless")
                 .secret(passwordEncoder.encode("pw"))
 //                .authorizedGrantTypes("client_credentials", "refresh_token", "client_credentials", "authorization_code", "password")
                 .authorizedGrantTypes("refresh_token", "password")
 //                .redirectUris("http://127.0.0.1:8081/a")
                 .scopes("default-scope")
-                .autoApprove(false);
+                .autoApprove(false)
+
+                .and()
+
+                .withClient("pointservice")
+                .secret(passwordEncoder.encode("pw"))
+                .authorizedGrantTypes("refresh_token", "password")
+                .scopes("default-scope")
+                .autoApprove(false)
         ;
     }
 }

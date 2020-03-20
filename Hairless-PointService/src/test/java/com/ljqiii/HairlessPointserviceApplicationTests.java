@@ -1,10 +1,10 @@
-package com.ljqiii.hairlesspointservice;
+package com.ljqiii;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class HairlessPointserviceApplicationTests {
+public class HairlessPointserviceApplicationTests {
 
     @Test
     void contextLoads() {
