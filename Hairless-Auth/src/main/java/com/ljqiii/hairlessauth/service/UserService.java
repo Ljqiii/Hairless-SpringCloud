@@ -21,7 +21,7 @@ public class UserService {
     @Autowired
     UserMapper userMapper;
 
-    @Autowired
+    @Autowired(required = false)
     PasswordEncoder passwordEncoder;
 
     @Autowired
