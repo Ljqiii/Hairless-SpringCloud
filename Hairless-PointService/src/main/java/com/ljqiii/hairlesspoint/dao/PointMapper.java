@@ -1,4 +1,4 @@
-package com.ljqiii.dao;
+package com.ljqiii.hairlesspoint.dao;
 
 import com.ljqiii.hairlesscommon.domain.Point;
 import com.ljqiii.hairlesscommon.domain.User;

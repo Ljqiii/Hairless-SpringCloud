@@ -39,19 +39,14 @@ public class UserService {
                 .eMail(userReg.getEmail())
                 .build();
 
-        if (userReg.getRole().equals("teacher")) {
-            user.setEnabled(false);
-        } else if (userReg.getRole().equals("normaluser")) {
-            user.setEnabled(true);
-        } else {
-            throw new UserException(UserException.ERROR.INSERT_FAIL);
-        }
+
+        user.setEnabled(true);
 
         int i = userMapper.insertUser(user);
 
         Integer userId = user.getId();
 
-        userRoleMapper.insert(userId,userRoleMapper.selectRoleByName(userReg.getRole()).getId());
+        userRoleMapper.insert(userId, userRoleMapper.selectRoleByName(userReg.getRole()).getId());
         return user;
     }
 }

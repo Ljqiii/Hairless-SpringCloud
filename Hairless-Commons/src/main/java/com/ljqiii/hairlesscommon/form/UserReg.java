@@ -25,7 +25,7 @@ public class UserReg {
     @Email(message = "邮箱格式不正确")
     String email;
 
-    @Pattern(regexp = "normaluser|teacher", message = "角色错误")
+    @Pattern(regexp = "NORMALUSER|TEACHER", message = "角色错误")
     String role;
 
 }

@@ -32,7 +32,7 @@
 
     <select id="selectAuthoritiesByUserId"
             resultType="com.ljqiii.hairlesscommon.domain.Role">
-        select role.* from user,user_role,role where user.id=user_role.userid and user.id=#{userid} and role.id=user_role.userid
+        select role.* from user,user_role,role where user.id=user_role.userid and user.id=#{userid} and role.id=user_role.roleid
     </select>
 
     <delete id="deleteUser">

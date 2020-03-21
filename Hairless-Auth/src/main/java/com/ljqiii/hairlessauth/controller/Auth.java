@@ -20,7 +20,7 @@ public class Auth {
     UserService userService;
 
 
-    @RequestMapping(value = "/current", method = RequestMethod.GET)
+    @RequestMapping(value = "/userinfo", method = RequestMethod.GET)
     public Map<String, Object> getUser(OAuth2Authentication user) {
         Map<String, Object> userInfo = new HashMap<>();
         userInfo.put("user", user.getPrincipal());
