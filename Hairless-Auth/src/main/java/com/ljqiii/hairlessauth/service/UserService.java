@@ -3,8 +3,7 @@ package com.ljqiii.hairlessauth.service;
 import com.ljqiii.hairlessauth.dao.UserMapper;
 import com.ljqiii.hairlessauth.dao.UserRoleMapper;
 import com.ljqiii.hairlesscommon.domain.User;
-import com.ljqiii.hairlesscommon.domain.UserRole;
-import com.ljqiii.hairlesscommon.exception.NewUserException;
+import com.ljqiii.hairlesscommon.exception.UserException;
 import com.ljqiii.hairlesscommon.form.UserReg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,32 +30,28 @@ public class UserService {
     public User newUser(UserReg userReg) {
 
         if (userMapper.selectUserByUserName(userReg.getUsername()) != null) {
-            throw new NewUserException("用户名经存在");
+            throw new UserException(UserException.ERROR.USER_ALREADY_EXISTS);
         }
 
         User user = User.builder()
                 .userName(userReg.getUsername())
                 .encodedPassword(passwordEncoder.encode(userReg.getPassword()))
                 .eMail(userReg.getEmail())
-                .isVip(false)
                 .build();
 
-        Integer roleid = null;
         if (userReg.getRole().equals("teacher")) {
             user.setEnabled(false);
         } else if (userReg.getRole().equals("normaluser")) {
             user.setEnabled(true);
         } else {
-            throw new NewUserException("添加用户失败");
+            throw new UserException(UserException.ERROR.INSERT_FAIL);
         }
 
         int i = userMapper.insertUser(user);
 
         Integer userId = user.getId();
-        UserRole userRole = new UserRole(userId, userRoleMapper.selectRoleByName(userReg.getRole()).getId());
 
-        userRoleMapper.insert(userRole);
+        userRoleMapper.insert(userId,userRoleMapper.selectRoleByName(userReg.getRole()).getId());
         return user;
     }
-
 }

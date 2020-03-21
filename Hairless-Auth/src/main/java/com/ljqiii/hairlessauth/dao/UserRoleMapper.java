@@ -1,23 +1,20 @@
 package com.ljqiii.hairlessauth.dao;
 
 import com.ljqiii.hairlesscommon.domain.Role;
-import com.ljqiii.hairlesscommon.domain.UserRole;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 
 @Mapper
 public interface UserRoleMapper {
-    int insert(UserRole record);
+    int insert(@Param("userid")int userid,@Param("roleid")int roleid);
 
-    int insertSelective(UserRole record);
-
-    @Select("select * from roles where id=#{id}")
+    @Select("select role.* from role where id=#{id}")
     Role selectRoleById(@Param("id") int id);
 
-    @Select("select * from roles where name=#{name}")
+    @Select("select role.* from role where name=#{name}")
     Role selectRoleByName(@Param("name") String name);
 
 }
