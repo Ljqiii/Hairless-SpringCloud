@@ -13,9 +13,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -24,17 +21,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.rsa.crypto.KeyStoreKeyFactory;
-import org.springframework.security.web.access.AccessDeniedHandler;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.security.KeyPair;
-import java.util.Arrays;
-import java.util.Collection;
 
 
 @Configuration
@@ -64,15 +50,30 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         security
                 .tokenKeyAccess("permitAll()")
                 .checkTokenAccess("isAuthenticated()")
-                .passwordEncoder(passwordEncoder);
+                .passwordEncoder(new PasswordEncoder() {
+                    @Override
+                    public String encode(CharSequence rawPassword) {
+                        return rawPassword.toString();
+                    }
 
+                    @Override
+                    public boolean matches(CharSequence rawPassword, String encodedPassword) {
+                        return rawPassword.toString().equals(encodedPassword);
+                    }
+                });
     }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
                 .withClient("browser")
-                .authorizedGrantTypes("refresh_token", "password")
-                .scopes("ui");
+                .authorizedGrantTypes("refresh_token", "password", "client_credentials")
+                .scopes("ui")
+
+                .and()
+                .withClient("point-service")
+                .secret("pw")
+                .authorizedGrantTypes("client_credentials", "refresh_token", "password")
+                .scopes("ui", "server");
     }
 }

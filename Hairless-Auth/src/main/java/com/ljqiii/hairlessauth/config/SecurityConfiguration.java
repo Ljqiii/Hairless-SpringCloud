@@ -31,9 +31,9 @@ import java.util.Arrays;
 import java.util.Collection;
 
 
-//@EnableWebSecurity
+@EnableWebSecurity
 @Configuration
-//@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //
 //    @Autowired
