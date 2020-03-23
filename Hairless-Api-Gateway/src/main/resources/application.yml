@@ -1,0 +1,23 @@
+server:
+  port: 7082
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
+spring:
+  application:
+    name: api-gateway
+
+zuul:
+  host:
+    connect-timeout-millis: -1
+    socket-timeout-millis: -1
+  routes:
+    auth-server:
+      path: /api/auth/**
+      url: http://127.0.0.1:7081
+  sensitive-headers:
+
+
+debug: true
+
