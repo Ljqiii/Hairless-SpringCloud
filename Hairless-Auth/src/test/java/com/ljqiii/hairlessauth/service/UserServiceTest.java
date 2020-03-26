@@ -2,7 +2,7 @@ package com.ljqiii.hairlessauth.service;
 
 import com.ljqiii.HairlessAuthApplicationTests;
 import com.ljqiii.hairlesscommon.domain.User;
-import com.ljqiii.hairlesscommon.form.UserReg;
+import com.ljqiii.hairlessauth.form.UserReg;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

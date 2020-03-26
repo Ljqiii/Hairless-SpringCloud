@@ -4,7 +4,7 @@ import com.ljqiii.hairlessauth.dao.UserMapper;
 import com.ljqiii.hairlessauth.dao.UserRoleMapper;
 import com.ljqiii.hairlesscommon.domain.User;
 import com.ljqiii.hairlesscommon.exception.UserException;
-import com.ljqiii.hairlesscommon.form.UserReg;
+import com.ljqiii.hairlessauth.form.UserReg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -74,6 +74,19 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 .withClient("point-service")
                 .secret("pw")
                 .authorizedGrantTypes("client_credentials", "refresh_token", "password")
-                .scopes("ui", "server");
+                .scopes("ui", "server")
+
+                .and()
+                .withClient("dockerjudge-service")
+                .secret("pw")
+                .authorizedGrantTypes("client_credentials", "refresh_token", "password")
+                .scopes("ui", "server")
+
+                .and()
+                .withClient("notification-service")
+                .secret("pw")
+                .authorizedGrantTypes("client_credentials", "refresh_token", "password")
+                .scopes("ui", "server")
+        ;
     }
 }

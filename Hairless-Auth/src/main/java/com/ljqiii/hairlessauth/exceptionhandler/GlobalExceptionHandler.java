@@ -1,8 +1,8 @@
-package com.ljqiii.hairlesscommon.exception.handler;
+package com.ljqiii.hairlessauth.exceptionhandler;
 
 import com.ljqiii.hairlesscommon.enums.ResultEnum;
 import com.ljqiii.hairlesscommon.exception.UserException;
-import com.ljqiii.hairlesscommon.vo.ResultVO;
+import com.ljqiii.hairlesscommon.vo.HairlessResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindException;
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = BindException.class)
     @ResponseBody
-    public ResultVO bindExceptionHandler(BindException e) {
+    public HairlessResponse bindExceptionHandler(BindException e) {
         logger.error("表单验证错误", e);
         BindingResult bindingResult = e.getBindingResult();
         List<String> errMsgs = new ArrayList<>();
@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
         for (ObjectError error : bindingResult.getAllErrors()) {
             errMsgs.add(error.getDefaultMessage());
         }
-        return new ResultVO<List<String>>(ResultEnum.PARAM_ERROR.getCode(), ResultEnum.PARAM_ERROR.getMessage(), errMsgs);
+        return new HairlessResponse<List<String>>(ResultEnum.PARAM_ERROR.getCode(), ResultEnum.PARAM_ERROR.getMessage(), errMsgs);
     }
 
 
@@ -49,17 +49,17 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = NullPointerException.class)
     @ResponseBody
-    public ResultVO nullPointerExceptionHandler(NullPointerException e) {
+    public HairlessResponse nullPointerExceptionHandler(NullPointerException e) {
         logger.error("NullPointerException", e);
-        return new ResultVO<Void>(ResultEnum.SERVER_ERROR.getCode(), ResultEnum.SERVER_ERROR.getMessage(), null);
+        return new HairlessResponse<Void>(ResultEnum.SERVER_ERROR.getCode(), ResultEnum.SERVER_ERROR.getMessage(), null);
     }
 
 
     @ExceptionHandler(value = UserException.class)
     @ResponseBody
-    public ResultVO UserExceptionHandler(UserException e) {
+    public HairlessResponse UserExceptionHandler(UserException e) {
         logger.error("UserException", e);
-        return new ResultVO<Void>(ResultEnum.SERVER_ERROR.getCode(), e.getMessage(), null);
+        return new HairlessResponse<Void>(ResultEnum.SERVER_ERROR.getCode(), e.getMessage(), null);
     }
 
 }

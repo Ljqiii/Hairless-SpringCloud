@@ -1,0 +1,21 @@
+package com.ljqiii.hairlesscommon.vo;
+
+import com.ljqiii.hairlesscommon.enums.ResultEnum;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class HairlessResponse<T> {
+    Integer code;
+    String msg;
+    T data;
+
+    public void setCodeMsg(ResultEnum resultEnum) {
+        code = resultEnum.getCode();
+        msg = resultEnum.getMessage();
+    }
+}

@@ -1,4 +1,4 @@
-package com.ljqiii.hairlesscommon.form;
+package com.ljqiii.hairlessauth.form;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;

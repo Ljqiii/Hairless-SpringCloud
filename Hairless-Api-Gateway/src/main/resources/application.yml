@@ -4,20 +4,60 @@ eureka:
   client:
     service-url:
       defaultZone: http://127.0.0.1:8761/eureka
+logging:
+  level:
+    org: debug
+
+
 spring:
+  security:
+    oauth2:
   application:
     name: api-gateway
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            allowCredentials: true
+      routes:
+        - id: auth-server
+          uri: http://127.0.0.1:7081
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - StripPrefix=2
 
-zuul:
-  host:
-    connect-timeout-millis: -1
-    socket-timeout-millis: -1
-  routes:
-    auth-server:
-      path: /api/auth/**
-      url: http://127.0.0.1:7081
-  sensitive-headers:
+        - id: point-service
+          uri: http://127.0.0.1:7083
+          predicates:
+            - Path=/api/point/**
+          filters:
+            - StripPrefix=2
+
+        - id: dockerjudge-service
+          uri: http://127.0.0.1:7084
+          predicates:
+            - Path=/api/judge/**
+          filters:
+            - StripPrefix=2
+
+        - id: notification-service
+          uri: http://127.0.0.1:7084
+          predicates:
+            - Path=/api/notification/**
+          filters:
+            - StripPrefix=2
 
 
-debug: true
 
+
+
+
+#
+#  filter:
+#        remove-non-proxy-headers:
+#          headers:

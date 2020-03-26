@@ -10,4 +10,9 @@ class HairlessApiGatewayApplicationTests {
     void contextLoads() {
     }
 
+    @Test
+    public void test2() {
+        throw new RuntimeException();
+    }
+
 }
