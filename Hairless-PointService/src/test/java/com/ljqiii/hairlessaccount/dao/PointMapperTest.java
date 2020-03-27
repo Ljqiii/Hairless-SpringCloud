@@ -1,7 +1,8 @@
-package com.ljqiii.hairlesspoint.dao;
+package com.ljqiii.hairlessaccount.dao;
 
 import com.ljqiii.HairlessPointserviceApplicationTests;
 import com.ljqiii.hairlesscommon.domain.User;
+import com.ljqiii.hairlesspoint.dao.PointMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

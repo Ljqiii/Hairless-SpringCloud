@@ -9,9 +9,9 @@
     </parent>
 
     <groupId>com.ljqiii</groupId>
-    <artifactId>hairless-pointservice</artifactId>
+    <artifactId>hairless-accountservice</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>hairless-pointservice</name>
+    <name>hairless-accountservice</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>

@@ -87,6 +87,13 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 .secret("pw")
                 .authorizedGrantTypes("client_credentials", "refresh_token", "password")
                 .scopes("ui", "server")
+
+                .and()
+                .withClient("account-service")
+                .secret("pw")
+                .authorizedGrantTypes("client_credentials", "refresh_token", "password")
+                .scopes("ui", "server")
+
         ;
     }
 }

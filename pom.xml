@@ -19,6 +19,8 @@
         <module>Hairless-Auth</module>
         <module>Hairless-PointService</module>
         <module>Hairless-ConfigServer</module>
+        <module>Hairless-NotificationService</module>
+        <module>Hairless-AccountService</module>
     </modules>
 
 
@@ -113,7 +115,7 @@
         <repository>
             <id>selfmavencenter</id>
             <name>self maven center</name>
-            <url>http://34.92.19.76:8081/repository/maven-public/</url>
+            <url>http://nexus.ljqiii.xyz/repository/maven-public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -126,7 +128,7 @@
         <pluginRepository>
             <id>selfmavencenter</id>
             <name>self maven center</name>
-            <url>http://34.92.19.76:8081/repository/maven-public/</url>
+            <url>http://nexus.ljqiii.xyz/repository/maven-public/</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>

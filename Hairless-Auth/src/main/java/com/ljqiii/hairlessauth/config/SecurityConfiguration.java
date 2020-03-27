@@ -109,7 +109,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
-                .antMatchers("/user/register","/test").permitAll()
+                .antMatchers("/test", "/ping", "/me").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll();

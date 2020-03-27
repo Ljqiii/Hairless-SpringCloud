@@ -2,16 +2,16 @@ package com.ljqiii;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 
 @SpringBootApplication
-@EnableDiscoveryClient
 @EnableResourceServer
-public class HairlessAuthApplication {
+@EnableEurekaClient
+public class HairlessNotificationserviceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(HairlessAuthApplication.class, args);
+        SpringApplication.run(HairlessNotificationserviceApplication.class, args);
     }
 
 }

@@ -52,6 +52,13 @@ spring:
           filters:
             - StripPrefix=2
 
+        - id: account-service
+          uri: http://127.0.0.1:7086
+          predicates:
+            - Path=/api/account/**
+          filters:
+            - StripPrefix=2
+
 
 
 

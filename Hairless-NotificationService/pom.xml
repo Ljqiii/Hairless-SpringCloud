@@ -9,9 +9,9 @@
     </parent>
 
     <groupId>com.ljqiii</groupId>
-    <artifactId>hairless-pointservice</artifactId>
+    <artifactId>hairless-notificationservice</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>hairless-pointservice</name>
+    <name>hairless-notificationservice</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -20,6 +20,8 @@
     </properties>
 
     <dependencies>
+
+
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-oauth2</artifactId>
@@ -41,7 +43,6 @@
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.1.1</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
@@ -64,7 +65,9 @@
             <artifactId>hairless-commons</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-    </dependencies>
 
+
+
+    </dependencies>
 
 </project>
