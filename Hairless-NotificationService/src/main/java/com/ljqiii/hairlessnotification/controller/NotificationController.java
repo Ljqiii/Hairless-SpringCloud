@@ -7,6 +7,7 @@ import com.ljqiii.hairlesscommon.vo.HairlessResponse;
 import com.ljqiii.hairlessnotification.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
@@ -29,12 +30,13 @@ public class NotificationController {
         return null;
     }
 
-    @GetMapping("/getunreadcount")
-    HairlessResponse<JSONObject> getUnreadNotificationCount(Principal principal) {
+    @PostMapping("/getunreadcount")
+    HairlessResponse<JSONObject> getUnreadNotificationCount(String username) {
         JSONObject data = new JSONObject();
         data.put("count", 132);
         HairlessResponse<JSONObject> response=new HairlessResponse<>();
         response.setCodeMsg(ResultEnum.OK);
+        response.setData(data);
         return response;
     }
 

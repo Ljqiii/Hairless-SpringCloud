@@ -18,4 +18,14 @@ public class HairlessResponse<T> {
         code = resultEnum.getCode();
         msg = resultEnum.getMessage();
     }
+
+    public boolean hasError() {
+        return !this.msg.equals("success");
+    }
+
+    public void ok(){
+        this.code=ResultEnum.OK.getCode();
+        this.msg=ResultEnum.OK.getMessage();
+    }
+
 }

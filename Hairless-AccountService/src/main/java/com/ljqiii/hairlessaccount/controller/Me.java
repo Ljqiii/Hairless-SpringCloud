@@ -2,6 +2,7 @@ package com.ljqiii.hairlessaccount.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ljqiii.hairlessaccount.service.NotificationService;
+import com.ljqiii.hairlesscommon.enums.ResultEnum;
 import com.ljqiii.hairlesscommon.vo.HairlessResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,8 +30,14 @@ public class Me {
 
         HairlessResponse<JSONObject> response = new HairlessResponse<>();
         JSONObject data = new JSONObject();
-        int count = notificationService.unReadNotificationCount(name);
-        data.put("unReadNotificationCount", count);
+        HairlessResponse<JSONObject> notificationCountResponse = notificationService.unReadNotificationCount(name);
+        if (!notificationCountResponse.hasError()) {
+            data.put("unReadNotificationCount", notificationCountResponse.getData().getInteger("count"));
+            response.ok();
+        } else {
+            response.setCodeMsg(ResultEnum.SERVER_ERROR);
+        }
+        response.setData(data);
         return response;
     }
 

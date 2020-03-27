@@ -16,4 +16,8 @@ public enum ResultEnum {
         this.code = code;
         this.message = message;
     }
+
+    boolean isOk() {
+        return this.getMessage().equals("success");
+    }
 }
