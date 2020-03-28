@@ -1,4 +1,4 @@
-package com.ljqiii.judger.congig;
+package com.ljqiii.hairlessdockerjudge.congig;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

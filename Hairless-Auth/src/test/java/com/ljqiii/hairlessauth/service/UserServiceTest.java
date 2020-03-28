@@ -1,6 +1,6 @@
 package com.ljqiii.hairlessauth.service;
 
-import com.ljqiii.HairlessAuthApplicationTests;
+import com.ljqiii.hairlessauth.HairlessAuthApplicationTests;
 import com.ljqiii.hairlesscommon.domain.User;
 import com.ljqiii.hairlessauth.form.UserReg;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,10 +1,10 @@
-package com.ljqiii;
+package com.ljqiii.hairlessnotification;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class HairlessAuthApplicationTests {
+public class HairlessNotificationserviceApplicationTests {
 
     @Test
     void contextLoads() {

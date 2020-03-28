@@ -1,6 +1,5 @@
 package com.ljqiii.hairlessaccount.service.impl;
 
-import com.ljqiii.HairlessAccountserviceApplicationTests;
 import com.ljqiii.hairlessaccount.service.AccountService;
 import com.ljqiii.hairlesscommon.domain.amqpdomain.LoginInfo;
 import org.junit.Assert;

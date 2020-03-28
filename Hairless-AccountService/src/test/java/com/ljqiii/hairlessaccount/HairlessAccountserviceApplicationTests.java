@@ -1,4 +1,4 @@
-package com.ljqiii;
+package com.ljqiii.hairlessaccount;
 
 import com.ljqiii.hairlesscommon.domain.Point;
 import lombok.extern.slf4j.Slf4j;

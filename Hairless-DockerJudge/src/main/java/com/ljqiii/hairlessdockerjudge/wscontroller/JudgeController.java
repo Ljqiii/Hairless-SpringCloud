@@ -1,4 +1,4 @@
-package com.ljqiii.judger.wscontroller;
+package com.ljqiii.hairlessdockerjudge.wscontroller;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;

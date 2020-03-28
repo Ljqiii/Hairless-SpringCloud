@@ -1,6 +1,6 @@
 package com.ljqiii.hairlessauth.dao;
 
-import com.ljqiii.HairlessAuthApplicationTests;
+import com.ljqiii.hairlessauth.HairlessAuthApplicationTests;
 import com.ljqiii.hairlesscommon.domain.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

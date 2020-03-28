@@ -1,13 +1,13 @@
-package com.ljqiii;
+package com.ljqiii.hairlessdockerjudge;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class HairlessConfigserverApplication {
+public class HairlessDockerjudgeApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(HairlessConfigserverApplication.class, args);
+        SpringApplication.run(HairlessDockerjudgeApplication.class, args);
     }
 
 }
