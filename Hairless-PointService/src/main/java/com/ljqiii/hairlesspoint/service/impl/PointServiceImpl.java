@@ -13,9 +13,7 @@ public class PointServiceImpl implements PointService {
     PointMapper pointMapper;
 
     @Override
-    public void addPoint(int userid, int pointeventid) {
-        Point point = Point.builder().userid(userid).eventid(pointeventid).build();
+    public void addPoint(Point point) {
         pointMapper.insertPoint(point);
     }
-
 }

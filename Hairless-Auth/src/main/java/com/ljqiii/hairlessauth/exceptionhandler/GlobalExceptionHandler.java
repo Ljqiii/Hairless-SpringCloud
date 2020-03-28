@@ -3,6 +3,7 @@ package com.ljqiii.hairlessauth.exceptionhandler;
 import com.ljqiii.hairlesscommon.enums.ResultEnum;
 import com.ljqiii.hairlesscommon.exception.UserException;
 import com.ljqiii.hairlesscommon.vo.HairlessResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindException;
@@ -16,10 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
-
-
-    Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     /**
      *
@@ -30,7 +29,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = BindException.class)
     @ResponseBody
     public HairlessResponse bindExceptionHandler(BindException e) {
-        logger.error("表单验证错误", e);
+        log.error("表单验证错误", e);
         BindingResult bindingResult = e.getBindingResult();
         List<String> errMsgs = new ArrayList<>();
 
@@ -50,7 +49,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = NullPointerException.class)
     @ResponseBody
     public HairlessResponse nullPointerExceptionHandler(NullPointerException e) {
-        logger.error("NullPointerException", e);
+        log.error("NullPointerException", e);
         return new HairlessResponse<Void>(ResultEnum.SERVER_ERROR.getCode(), ResultEnum.SERVER_ERROR.getMessage(), null);
     }
 
@@ -58,7 +57,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = UserException.class)
     @ResponseBody
     public HairlessResponse UserExceptionHandler(UserException e) {
-        logger.error("UserException", e);
+        log.error("UserException", e);
         return new HairlessResponse<Void>(ResultEnum.SERVER_ERROR.getCode(), e.getMessage(), null);
     }
 

@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Time;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -13,7 +13,7 @@ import java.sql.Time;
 @Builder
 public class Point {
     int id;
-    int userid;
-    Time time;
+    String username;
+    Date createtime;
     int eventid;
 }

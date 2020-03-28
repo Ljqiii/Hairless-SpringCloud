@@ -16,11 +16,5 @@ public class PointController {
     @Autowired
     PointService pointService;
 
-    @PostMapping("/addpoint")
-    public JSONObject addPoint(Principal principal, PointEvent pointEvent) {
-        pointService.addPoint(1, 2);
-        JSONObject response = new JSONObject();
-        response.put("a", "b");
-        return response;
-    }
+
 }

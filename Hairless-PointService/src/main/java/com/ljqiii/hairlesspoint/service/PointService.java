@@ -1,7 +1,9 @@
 package com.ljqiii.hairlesspoint.service;
 
 
+import com.ljqiii.hairlesscommon.domain.Point;
+
 public interface PointService {
 
-    void addPoint(int userid,int pointeventid);
+    void addPoint(Point point);
 }

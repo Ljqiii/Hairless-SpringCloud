@@ -2,6 +2,7 @@ package com.ljqiii.hairlessauth.controller;
 
 import com.ljqiii.hairlessauth.service.UserService;
 import com.ljqiii.hairlessauth.form.UserReg;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@Slf4j
 public class Auth {
 
-    Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     UserService userService;

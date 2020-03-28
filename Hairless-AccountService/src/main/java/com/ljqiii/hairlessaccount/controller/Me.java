@@ -1,7 +1,8 @@
 package com.ljqiii.hairlessaccount.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.ljqiii.hairlessaccount.service.NotificationService;
+import com.ljqiii.hairlessaccount.client.NotificationClient;
+import com.ljqiii.hairlessaccount.service.AccountService;
 import com.ljqiii.hairlesscommon.enums.ResultEnum;
 import com.ljqiii.hairlesscommon.vo.HairlessResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,12 @@ import java.security.Principal;
 @RestController
 public class Me {
 
-    @Autowired(required = false)
-    NotificationService notificationService;
+
+    @Autowired
+    AccountService accountService;
+
+    @Autowired
+    NotificationClient notificationClient;
 
     @GetMapping("/pointdetails")
     public Principal pointDetails(Principal principal) {
@@ -26,11 +31,13 @@ public class Me {
     @GetMapping("/me")
     @PreAuthorize("hasRole('ROLE_NORMALUSER')")
     public HairlessResponse<JSONObject> a(Principal principal) {
+
         String name = principal.getName();
+        accountService.sendLogin(name);
 
         HairlessResponse<JSONObject> response = new HairlessResponse<>();
         JSONObject data = new JSONObject();
-        HairlessResponse<JSONObject> notificationCountResponse = notificationService.unReadNotificationCount(name);
+        HairlessResponse<JSONObject> notificationCountResponse = notificationClient.unReadNotificationCount(name);
         if (!notificationCountResponse.hasError()) {
             data.put("unReadNotificationCount", notificationCountResponse.getData().getInteger("count"));
             response.ok();
