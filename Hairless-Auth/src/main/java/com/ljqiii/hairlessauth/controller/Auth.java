@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -29,7 +30,14 @@ public class Auth {
         return principal;
     }
 
-    @PostMapping("/user/register")
+    @GetMapping("/register")
+    public ModelAndView register() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("register");
+        return modelAndView;
+    }
+
+    @PostMapping("/register")
     public String register(@Valid UserReg userReg) {
         userService.newUser(userReg);
         return "ok";
