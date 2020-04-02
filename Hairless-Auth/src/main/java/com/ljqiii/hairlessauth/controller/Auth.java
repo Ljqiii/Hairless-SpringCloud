@@ -27,14 +27,6 @@ public class Auth {
     @RequestMapping(value = "/userinfo", method = RequestMethod.GET)
     public Principal getUser(Principal principal) {
         return principal;
-//
-//        Map<String, Object> userInfo = new HashMap<>();
-//
-//
-//        userInfo.put("user", user.getPrincipal());
-//        userInfo.put("authorities", user.getUserAuthentication() != null ? user.getUserAuthentication().getAuthorities() : null);
-//
-//        return userInfo;
     }
 
     @PostMapping("/user/register")
