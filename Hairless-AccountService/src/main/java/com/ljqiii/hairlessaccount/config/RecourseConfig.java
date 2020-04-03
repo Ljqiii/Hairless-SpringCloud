@@ -1,4 +1,4 @@
-package com.ljqiii.hairlessauth.config;
+package com.ljqiii.hairlessaccount.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,6 +11,7 @@ public class RecourseConfig extends ResourceServerConfigurerAdapter {
         http
                 .anonymous()
                 .and()
-                .authorizeRequests().antMatchers("/register","/oauth**").permitAll();
+                .authorizeRequests().antMatchers("/api/me").permitAll()
+        .antMatchers("/api/public").authenticated();
     }
 }

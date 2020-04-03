@@ -26,16 +26,16 @@ spring:
             client-id: hairless-gateway
             client-secret: pw
             client-name: Hairless
-            scope: scope
+            scope: ui
             provider: custom-provider
-            redirect-uri: http://local1.ljqiii.xyz:7082/login/oauth2/code/gateway
+            redirect-uri: http://hairless.ljqiii.xyz:7082/login/oauth2/code/gateway
             client-authentication-method: basic
             authorization-grant-type: authorization_code
         provider:
           custom-provider:
-            token-uri: http://uaa:7081/oauth/token
-            authorization-uri: http://uaa:7081/oauth/authorize
-            user-info-uri: http://uaa:7081/userinfo
+            token-uri: http://hairless.ljqiii.xyz:7081/oauth/token
+            authorization-uri: http://hairless.ljqiii.xyz:7081/oauth/authorize
+            user-info-uri: http://hairless.ljqiii.xyz:7081/userinfo
             user-name-attribute: name
 
   cloud:
@@ -88,6 +88,10 @@ spring:
             - TokenRelay=
             - StripPrefix=2
 
+        - id: hairless-vue
+          uri: http://127.0.0.1:8080
+          predicates:
+            - Path=/**
 
 
 

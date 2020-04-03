@@ -2,6 +2,7 @@ package com.ljqiii.hairlessauth.config;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ljqiii.hairlessauth.dao.UserMapper;
+import com.ljqiii.hairlessauth.service.UserService;
 import com.ljqiii.hairlesscommon.domain.User;
 import com.ljqiii.hairlesscommon.enums.ResultEnum;
 import com.ljqiii.hairlesscommon.vo.HairlessResponse;
@@ -18,6 +19,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -50,9 +52,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    UserService userService;
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable();
+
         http.authorizeRequests()
                 .antMatchers("/register", "/ping").permitAll()
                 .and()
@@ -62,10 +69,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
         //未认证返回401，并禁止/login
-        http.exceptionHandling(e -> {
-                    e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
-                }
-        );
+//        http.exceptionHandling(e -> {
+//                    e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
+//                }
+//        );
 
 
         http.formLogin().failureHandler((request, response, exception) -> {
@@ -78,18 +85,27 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     writer.flush();
                 }
         );
+
+        //成功返回json
         http.formLogin().successHandler((request, response, exception) -> {
             HairlessResponse<Void> hairlessResponse = new HairlessResponse<>();
             hairlessResponse.setCodeMsg(ResultEnum.LOGIN_SUCCESS);
             response.setStatus(HttpStatus.OK.value());
             PrintWriter writer = response.getWriter();
 
+            Object principal;
+            if ((principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal()) instanceof User) {
+                String userName = ((User) principal).getUserName();
+
+                userService.addLoginPoint(userName);
+                userService.addLoginPoint(userName);
+            }
+
             writer.print(JSONObject.toJSONString(hairlessResponse));
             writer.flush();
         });
 
 
-        http.csrf().disable();
         http.cors();
         http.rememberMe().key(rememberme_key);
     }
