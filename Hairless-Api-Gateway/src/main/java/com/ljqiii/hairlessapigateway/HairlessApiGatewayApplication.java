@@ -9,11 +9,13 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.security.oauth2.gateway.TokenRelayGatewayFilterFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.ReactiveAuthorizationManager;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.authentication.HttpStatusServerEntryPoint;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
 import reactor.core.publisher.Mono;
 
@@ -26,14 +28,14 @@ public class HairlessApiGatewayApplication {
     SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) throws Exception {
         http
                 .authorizeExchange()
-                .pathMatchers(HttpMethod.POST, "/api/auth/**")
+                .pathMatchers(HttpMethod.POST, "/auth/**")
                 .permitAll()
 
-                .pathMatchers("/api/*/public/**")
+                .pathMatchers("/api/*/public/**", "/auth/**")
                 .permitAll()
 
 
-                .pathMatchers("/api/**")
+                .pathMatchers("/api/**", "/me")
                 .authenticated()
 
 
@@ -41,7 +43,7 @@ public class HairlessApiGatewayApplication {
                 .permitAll()
         ;
 
-
+        http.exceptionHandling().authenticationEntryPoint(new HttpStatusServerEntryPoint(HttpStatus.UNAUTHORIZED));
         http.oauth2Login();
         http.csrf().disable();
         return http.build();

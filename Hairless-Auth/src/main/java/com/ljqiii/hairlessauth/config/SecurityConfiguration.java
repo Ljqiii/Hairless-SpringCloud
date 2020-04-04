@@ -78,35 +78,35 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //        );
 
 
-        http.formLogin().failureHandler((request, response, exception) -> {
-                    HairlessResponse<Void> hairlessResponse = new HairlessResponse<>();
-                    hairlessResponse.setCodeMsg(ResultEnum.UNAUTHORIZED);
-                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                    PrintWriter writer = response.getWriter();
-
-                    writer.print(JSONObject.toJSONString(hairlessResponse));
-                    writer.flush();
-                }
-        );
+//        http.formLogin().failureHandler((request, response, exception) -> {
+//                    HairlessResponse<Void> hairlessResponse = new HairlessResponse<>();
+//                    hairlessResponse.setCodeMsg(ResultEnum.UNAUTHORIZED);
+//                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
+//                    PrintWriter writer = response.getWriter();
+//
+//                    writer.print(JSONObject.toJSONString(hairlessResponse));
+//                    writer.flush();
+//                }
+//        );
 
         //成功返回json
-        http.formLogin().successHandler((request, response, exception) -> {
-            HairlessResponse<Void> hairlessResponse = new HairlessResponse<>();
-            hairlessResponse.setCodeMsg(ResultEnum.LOGIN_SUCCESS);
-            response.setStatus(HttpStatus.OK.value());
-            PrintWriter writer = response.getWriter();
-
-            Object principal;
-            if ((principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal()) instanceof User) {
-                String userName = ((User) principal).getUserName();
-
-                userService.addLoginPoint(userName);
-                userService.updateLastLoginTime(userName, new Date());
-            }
-
-            writer.print(JSONObject.toJSONString(hairlessResponse));
-            writer.flush();
-        });
+//        http.formLogin().successHandler((request, response, exception) -> {
+//            HairlessResponse<Void> hairlessResponse = new HairlessResponse<>();
+//            hairlessResponse.setCodeMsg(ResultEnum.LOGIN_SUCCESS);
+//            response.setStatus(HttpStatus.OK.value());
+//            PrintWriter writer = response.getWriter();
+//
+//            Object principal;
+//            if ((principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal()) instanceof User) {
+//                String userName = ((User) principal).getUserName();
+//
+//                userService.addLoginPoint(userName);
+//                userService.updateLastLoginTime(userName, new Date());
+//            }
+//
+//            writer.print(JSONObject.toJSONString(hairlessResponse));
+//            writer.flush();
+//        });
 
 //        http.logout().logoutSuccessHandler(new LogoutSuccessHandler() {
 //            @Override

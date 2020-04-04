@@ -51,10 +51,10 @@ spring:
         - id: auth-server
           uri: http://127.0.0.1:7081
           predicates:
-            - Path=/api/auth/**
+            - Path=/auth/**
           filters:
             - TokenRelay=
-            - StripPrefix=2
+            - StripPrefix=1
 
         - id: point-service
           uri: http://127.0.0.1:7083
@@ -73,7 +73,7 @@ spring:
             - StripPrefix=2
 
         - id: notification-service
-          uri: http://127.0.0.1:7084
+          uri: http://127.0.0.1:7085
           predicates:
             - Path=/api/notification/**
           filters:
