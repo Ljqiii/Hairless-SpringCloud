@@ -21,6 +21,7 @@
         <module>Hairless-ConfigServer</module>
         <module>Hairless-NotificationService</module>
         <module>Hairless-AccountService</module>
+        <module>Hairless-Main</module>
     </modules>
 
 

@@ -1,10 +1,9 @@
-package com.ljqiii.hairlessaccount.controller;
+package com.ljqiii.hairlessmain.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.InetAddress;
@@ -22,6 +21,7 @@ public class Ping {
             return "Unknow IpAddress";
         }
     }
+
 
     @Value("${spring.application.name}")
     private String appName;
