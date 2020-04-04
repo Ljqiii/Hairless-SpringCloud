@@ -23,5 +23,8 @@ public class User  {
     boolean isCredentialsExpired;
     boolean isEnabled;
 
+    boolean isVip;
+    String avatar;
+
     List<Role> authorities;
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+//TODO: 移到PointService里
 @Slf4j
 @Component
 @RabbitListener(queues = "logininfoTime")
@@ -29,17 +30,20 @@ public class UserInfoComsumer {
     @RabbitHandler
     public void process(LoginInfo loginInfo) {
         log.debug("Process Queue logininfoTime, values:{}", loginInfo);
-
-        if (loginInfo != null && loginInfo.getUsername() != null) {
-            Date lastLoginDate = userMapper.selectLastlogintime(loginInfo.getUsername());
-            if (!DateUtils.isSameDay(lastLoginDate, new Date())) {
-                Point point = new Point();
-                point.setUsername(loginInfo.getUsername());
-                point.setCreatetime(loginInfo.getLogintime());
-                point.setEventid(PointEventEnum.LOGIN_EVERYDAY.getEventid());
-                pointClient.addPoint(point);
+        try {
+            if (loginInfo != null && loginInfo.getUsername() != null) {
+                Date lastLoginDate = userMapper.selectLastlogintime(loginInfo.getUsername());
+                if (!DateUtils.isSameDay(lastLoginDate, new Date())) {
+                    Point point = new Point();
+                    point.setUsername(loginInfo.getUsername());
+                    point.setCreatetime(loginInfo.getLogintime());
+                    point.setEventid(PointEventEnum.LOGIN_EVERYDAY.getEventid());
+                    pointClient.addPoint(point);
+                }
+                userMapper.updateLastLoginTime(loginInfo.getUsername(), loginInfo.getLogintime());
             }
-            userMapper.updateLastLoginTime(loginInfo.getUsername(), loginInfo.getLogintime());
+        } catch (Exception e) {
+            log.debug("Process Queue logininfoTime fail, values:{}, Excetion:{}", loginInfo, e);
         }
     }
 }

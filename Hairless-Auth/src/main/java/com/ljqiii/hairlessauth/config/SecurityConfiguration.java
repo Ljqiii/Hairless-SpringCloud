@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,6 +29,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 @Configuration
@@ -98,13 +101,25 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 String userName = ((User) principal).getUserName();
 
                 userService.addLoginPoint(userName);
-                userService.addLoginPoint(userName);
+                userService.updateLastLoginTime(userName, new Date());
             }
 
             writer.print(JSONObject.toJSONString(hairlessResponse));
             writer.flush();
         });
 
+//        http.logout().logoutSuccessHandler(new LogoutSuccessHandler() {
+//            @Override
+//            public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+//                HairlessResponse<Void> hairlessResponse = new HairlessResponse<>();
+//                hairlessResponse.setCodeMsg(ResultEnum.LOGOUT_SUCCESS);
+//                response.setStatus(HttpStatus.OK.value());
+//                PrintWriter writer = response.getWriter();
+//
+//                writer.print(JSONObject.toJSONString(hairlessResponse));
+//                writer.flush();
+//            }
+//        });
 
         http.cors();
         http.rememberMe().key(rememberme_key);

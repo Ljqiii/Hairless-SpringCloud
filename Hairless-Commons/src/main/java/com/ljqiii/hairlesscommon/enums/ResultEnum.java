@@ -9,7 +9,8 @@ public enum ResultEnum {
     PARAM_ERROR(300, "参数错误"),
     SERVER_ERROR(500, "服务器错误"),
     UNAUTHORIZED(401, "Authentication Faild"),
-    LOGIN_SUCCESS(200, "Login Success");
+    LOGIN_SUCCESS(200, "Login Success"),
+    LOGOUT_SUCCESS(200, "Logout Success");
 
     private Integer code;
     private String message;

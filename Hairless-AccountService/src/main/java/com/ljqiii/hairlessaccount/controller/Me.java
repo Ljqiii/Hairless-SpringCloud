@@ -3,6 +3,7 @@ package com.ljqiii.hairlessaccount.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.ljqiii.hairlessaccount.client.NotificationClient;
 import com.ljqiii.hairlessaccount.service.AccountService;
+import com.ljqiii.hairlesscommon.domain.User;
 import com.ljqiii.hairlesscommon.enums.ResultEnum;
 import com.ljqiii.hairlesscommon.vo.HairlessResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,19 +32,27 @@ public class Me {
     @GetMapping("/me")
     @PreAuthorize("hasRole('ROLE_NORMALUSER')")
     public HairlessResponse<JSONObject> a(Principal principal) {
-
         String name = principal.getName();
-        accountService.sendLogin(name);
 
         HairlessResponse<JSONObject> response = new HairlessResponse<>();
         JSONObject data = new JSONObject();
+
+        data.put("username", name);
         HairlessResponse<JSONObject> notificationCountResponse = notificationClient.unReadNotificationCount(name);
         if (!notificationCountResponse.hasError()) {
             data.put("unReadNotificationCount", notificationCountResponse.getData().getInteger("count"));
             response.ok();
+
+            User user = accountService.getUserByUserName(name);
+            data.put("avatar", user.getAvatar());
+            data.put("nickname", user.getNickName());
+            data.put("isvip", user.isVip());
+
         } else {
             response.setCodeMsg(ResultEnum.SERVER_ERROR);
         }
+
+
         response.setData(data);
         return response;
     }

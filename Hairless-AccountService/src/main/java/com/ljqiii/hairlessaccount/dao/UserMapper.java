@@ -1,5 +1,6 @@
 package com.ljqiii.hairlessaccount.dao;
 
+import com.ljqiii.hairlesscommon.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -18,4 +19,7 @@ public interface UserMapper {
 
     @Select("select lastlogintime from user where user.username=#{username}")
     Date selectLastlogintime(String username);
+
+    @Select("select * from user where user.username=#{username}")
+    User selecetUserByUserName(String username);
 }
