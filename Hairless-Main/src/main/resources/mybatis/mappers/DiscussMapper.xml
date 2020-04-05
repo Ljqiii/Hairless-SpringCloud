@@ -12,7 +12,7 @@
             #{item.id}
         </foreach>
 
-        group by problemid;
+        group by problemid
 
     </select>
 </mapper>

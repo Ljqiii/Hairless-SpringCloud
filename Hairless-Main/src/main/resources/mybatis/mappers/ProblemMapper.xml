@@ -12,7 +12,7 @@
             WHERE category.symbol = #{category}
             and problem_category.categoryid = category.id
             and problem_category.problemid = problem.id
-            order by problem.id;
+            order by problem.id
         </if>
     </select>
 

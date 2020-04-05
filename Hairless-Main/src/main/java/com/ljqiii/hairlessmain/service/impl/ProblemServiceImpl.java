@@ -41,6 +41,10 @@ public class ProblemServiceImpl implements ProblemService {
         Page<Problem> problems = PageHelper.startPage(pageNum, pageCount)
                 .doSelectPage(() -> problemMapper.selectProblem(category));
 
+        if (problems.getResult().isEmpty()) {
+            return pageData;
+        }
+
         List<Map<Long, Long>> maps = discussMapper.selectCountDiscuss(problems.getResult());
 
         //获得评论数
