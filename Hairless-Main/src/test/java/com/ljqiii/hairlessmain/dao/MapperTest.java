@@ -2,6 +2,7 @@ package com.ljqiii.hairlessmain.dao;
 
 import com.ljqiii.hairlesscommon.domain.Category;
 import com.ljqiii.hairlesscommon.domain.Problem;
+import com.ljqiii.hairlesscommon.vo.CorrectLeaderboard;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -70,6 +71,12 @@ public class MapperTest {
         List<Integer> integers = submitMapper.selectSumbitSuccessProblemId(problems,"aaa");
         Assert.assertNotNull(integers);
 
+    }
+
+    @Test
+    public void selectLeaderBoard() {
+        List<CorrectLeaderboard> correctLeaderboards = submitMapper.selectCorrectLeaderboard();
+        Assert.assertNotNull(correctLeaderboards);
     }
 
     @Test

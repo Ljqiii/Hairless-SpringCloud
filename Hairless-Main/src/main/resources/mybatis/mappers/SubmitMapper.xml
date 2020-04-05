@@ -5,7 +5,7 @@
 <mapper namespace="com.ljqiii.hairlessmain.dao.SubmitMapper">
 
     <select id="selectSumbitSuccessProblemId" resultType="java.lang.Integer">
-        select problemid
+        select distinct problemid
         from submit where username=#{username} and result='success' and problemid in
         <foreach item="item" collection="problems" open="(" separator="," close=")">
             #{item.id}
@@ -13,12 +13,22 @@
     </select>
 
     <select id="selectSumbitProblemId" resultType="java.lang.Integer">
-        select problemid
+        select distinct problemid
         from submit where username=#{username} and problemid in
         <foreach item="item" collection="problems" open="(" separator="," close=")">
             #{item.id}
         </foreach>
 
+    </select>
+
+
+    <select id="selectCorrectLeaderboard" resultType="com.ljqiii.hairlesscommon.vo.CorrectLeaderboard">
+        select user.username, user.avatar, count(distinct problemid) successCount
+        from submit,
+             user
+        where submit.username = user.username
+          and submit.result = 'success'
+        group by user.username order by successCount desc limit 10
     </select>
 
 </mapper>
