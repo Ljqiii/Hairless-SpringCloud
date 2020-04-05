@@ -12,5 +12,5 @@ public class ProblemListVO {
     String title;
     String complexity;//难易程度
     String acceptance;//正确率
-    int discusscount;//讨论量
+    Long discusscount;//讨论量
 }

@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -21,6 +23,12 @@ public class MapperTest {
 
     @Autowired
     CategoryMapper categoryMapper;
+
+    @Autowired
+    DiscussMapper discussMapper;
+
+    @Autowired
+    SubmitMapper submitMapper;
 
     @Before
     public void setUp() throws Exception {
@@ -45,6 +53,24 @@ public class MapperTest {
         Assert.assertNull(problems);
     }
 
+    @Test
+    public void testDiscuss() {
+        ArrayList<Problem> problems = new ArrayList<>();
+        problems.add(Problem.builder().id(1).build());
+        problems.add(Problem.builder().id(2).build());
+        List<Map<Long, Long>> maps = discussMapper.selectCountDiscuss(problems);
+        Assert.assertNotNull(maps);
+    }
+
+    @Test
+    public void testSubmitOk() {
+        ArrayList<Problem> problems = new ArrayList<>();
+        problems.add(Problem.builder().id(1).build());
+        problems.add(Problem.builder().id(2).build());
+        List<Integer> integers = submitMapper.selectSumbitSuccessProblemId(problems,"aaa");
+        Assert.assertNotNull(integers);
+
+    }
 
     @Test
     public void selectProblemById() {
