@@ -1,5 +1,6 @@
 package com.ljqiii.hairlesscommon.vo;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ljqiii.hairlesscommon.enums.ResultEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class HairlessResponse<T> {
     Integer code;
     String msg;

@@ -13,6 +13,6 @@ public class RecourseConfig extends ResourceServerConfigurerAdapter {
                 .and()
                 .authorizeRequests().antMatchers("/api/me").permitAll()
                 .antMatchers("/public/**").permitAll()
-                .anyRequest().authenticated();
+                .anyRequest().permitAll();
     }
 }

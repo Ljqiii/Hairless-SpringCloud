@@ -36,7 +36,7 @@ public class HairlessApiGatewayApplication {
 
 
                 .pathMatchers("/api/**", "/me")
-                .authenticated()
+                .permitAll()
 
 
                 .pathMatchers("/**")
