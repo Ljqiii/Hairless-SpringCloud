@@ -31,6 +31,9 @@ public class MapperTest {
     @Autowired
     SubmitMapper submitMapper;
 
+    @Autowired
+    FavoriteMapper favoriteMapper;
+
     @Before
     public void setUp() throws Exception {
     }
@@ -64,11 +67,34 @@ public class MapperTest {
     }
 
     @Test
+    public void testBatchInsertFavorite() {
+        Problem build = Problem.builder().id(1).build();
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        arrayList.add(1);
+        arrayList.add(23);
+        arrayList.add(3);
+        int aaa = favoriteMapper.batchInsertFavoriteProblem("aaa", build, arrayList);
+        Assert.assertNotEquals(0, aaa);
+    }
+
+    @Test
+    public void testBatchDeleteFavorite() {
+        Problem build = Problem.builder().id(1).build();
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        arrayList.add(1);
+        arrayList.add(23);
+        arrayList.add(3);
+        int aaa = favoriteMapper.batchDeleteFavoriteProblem("aaa", build, arrayList);
+        Assert.assertNotEquals(0, aaa);
+    }
+
+
+    @Test
     public void testSubmitOk() {
         ArrayList<Problem> problems = new ArrayList<>();
         problems.add(Problem.builder().id(1).build());
         problems.add(Problem.builder().id(2).build());
-        List<Integer> integers = submitMapper.selectSumbitSuccessProblemId(problems,"aaa");
+        List<Integer> integers = submitMapper.selectSumbitSuccessProblemId(problems, "aaa");
         Assert.assertNotNull(integers);
 
     }
