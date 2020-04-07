@@ -20,4 +20,17 @@ public interface SubmitMapper {
 
     //提交正确率前十
     List<CorrectLeaderboard> selectCorrectLeaderboard();
+
+    //个人提交正确个数 dinstinct
+    @Select("select count(distinct problemid) from submit where username=#{username} and result='success'")
+    int selectDistinctSuccessCount(String username);
+
+    //个人提交正确个数
+    @Select("select count(problemid) from submit where username=#{username} and result='success'")
+    int selectSuccessCount(String username);
+
+    //个人提交总数
+    @Select("select count(problemid) from submit where username=#{username} ")
+    int selectSubmitCount(String username);
+
 }
