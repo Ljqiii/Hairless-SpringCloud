@@ -58,19 +58,4 @@ public class Me {
     }
 
 
-//
-//
-//    @GetMapping("/me")
-//    @PreAuthorize("hasRole('ROLE_NORMALUSER')")
-//    public HairlessResponse<JSONObject> me(Principal principal) {
-//        String name = principal.getName();
-//        HairlessResponse<JSONObject> response = new HairlessResponse<>();
-//        JSONObject data = new JSONObject();
-//
-//        int count = notificationService.unReadNotificationCount(name);
-//        data.put("unReadNotificationCount", count);
-//        return response;
-//    }
-
-
 }

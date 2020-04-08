@@ -31,4 +31,29 @@
         group by user.username order by successCount desc limit 10
     </select>
 
+
+    <select id="acceptance" resultType="com.ljqiii.hairlessmain.dataobject.ProblemAcceptance">
+        select t.problemid problemid,
+        t2.success / t.count acceptance
+        from (
+        select problemid, count(*) count
+        from submit
+        where problemid in
+        <foreach collection="problems" item="item" open="(" close=")" separator=",">
+            #{item.id}
+        </foreach>
+        group by problemid) t,
+        (
+        select problemid, count(*) success
+        from submit
+        where problemid in
+        <foreach collection="problems" item="item" open="(" close=")" separator=",">
+            #{item.id}
+        </foreach>
+        and result = 'success'
+        group by problemid
+        ) t2
+        where t.problemid = t2.problemid
+    </select>
+
 </mapper>

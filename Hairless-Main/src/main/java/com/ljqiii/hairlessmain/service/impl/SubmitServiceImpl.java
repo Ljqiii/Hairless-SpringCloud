@@ -20,7 +20,7 @@ public class SubmitServiceImpl implements SubmitService {
     }
 
     @Override
-    public HashMap<String, Integer> accuracyData(String username) {
+    public HashMap<String, Integer> userAccuracyData(String username) {
         HashMap<String, Integer> data = new HashMap<>();
         int submitCount = submitMapper.selectSubmitCount(username);
         int distinctSuccessCount = submitMapper.selectDistinctSuccessCount(username);

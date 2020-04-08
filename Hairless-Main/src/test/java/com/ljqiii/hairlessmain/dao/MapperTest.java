@@ -3,6 +3,7 @@ package com.ljqiii.hairlessmain.dao;
 import com.ljqiii.hairlesscommon.domain.Category;
 import com.ljqiii.hairlesscommon.domain.Problem;
 import com.ljqiii.hairlesscommon.vo.CorrectLeaderboard;
+import com.ljqiii.hairlessmain.dataobject.ProblemAcceptance;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -40,6 +39,18 @@ public class MapperTest {
 
 
     @Test
+    public void acceptance() {
+
+        List<ProblemAcceptance> acceptance = submitMapper.acceptance(Arrays.asList(
+                Problem.builder().id(1).build(),
+                Problem.builder().id(2).build(),
+                Problem.builder().id(3).build()
+        ));
+        Assert.assertNotNull(acceptance);
+
+    }
+
+    @Test
     public void selectProblem() {
         List<Problem> problems = problemMapper.selectProblem(null);
         Assert.assertNull(problems);
@@ -62,7 +73,7 @@ public class MapperTest {
         ArrayList<Problem> problems = new ArrayList<>();
         problems.add(Problem.builder().id(1).build());
         problems.add(Problem.builder().id(2).build());
-        List<Map<Long, Long>> maps = discussMapper.selectCountDiscuss(problems);
+        List<Map<Long, Long>> maps = discussMapper.batchSelectCountDiscuss(problems);
         Assert.assertNotNull(maps);
     }
 

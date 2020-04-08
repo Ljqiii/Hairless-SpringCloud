@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface SubmitService {
     List<CorrectLeaderboard> correctLeaderboard();
-    HashMap<String, Integer> accuracyData(String username);
+    HashMap<String, Integer> userAccuracyData(String username);
 }

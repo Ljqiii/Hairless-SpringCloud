@@ -19,4 +19,11 @@ public interface ProblemMapper {
 
     @Delete("delete from problem where id=#{id}")
     int deleteProblemById(@Param("id") int id);
+
+    @Select("select onlyVip from problem where id=#{id}")
+    boolean selectIfOnlyVipByProblemId(@Param("id") int id);
+
+    @Select("select count(*) from favorite where problemid=#{problemid} and username=#{username}")
+    int selectCountFavorite(@Param("problemid") int problemid, @Param("username") String username);
+
 }

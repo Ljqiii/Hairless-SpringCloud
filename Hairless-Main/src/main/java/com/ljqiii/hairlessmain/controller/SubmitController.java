@@ -35,7 +35,7 @@ public class SubmitController {
     @PreAuthorize("hasRole('ROLE_NORMALUSER')")
     public HairlessResponse<List<JSONObject>> accuracy(Principal principal) {
         String name = principal.getName();
-        HashMap<String, Integer> accuracyData = submitService.accuracyData(name);
+        HashMap<String, Integer> accuracyData = submitService.userAccuracyData(name);
         HairlessResponse<List<JSONObject>> response = new HairlessResponse<>();
         List<JSONObject> resultList = new ArrayList<>();
         JSONObject successcount = new JSONObject();

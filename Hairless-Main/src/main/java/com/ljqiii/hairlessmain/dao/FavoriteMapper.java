@@ -39,4 +39,10 @@ public interface FavoriteMapper {
     @Select("select favoritefolderid from favorite where username=#{username} and problemid=#{problemid}")
     List<Integer> selectProblemFavoriteFolderList(@Param("username") String username, @Param("problemid") Integer problemid);
 
+    @Select("select count(*) from favorite where problemid=#{problemid}")
+    int selectCountFavoriteProblem(@Param("problemid") int problemid);
+
+    @Select("select count(*) from favorite where problemid=#{problemid} and username=#{username}")
+    int selectCountUserNameProblem(@Param("problemid") int problemid, @Param("username") String username);
+
 }

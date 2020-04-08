@@ -13,7 +13,10 @@ import java.util.Map;
 public interface DiscussMapper {
 
 
-    List<Map<Long, Long>> selectCountDiscuss(@Param("problems") List<Problem> problems);
+    List<Map<Long, Long>> batchSelectCountDiscuss(@Param("problems") List<Problem> problems);
+
+    @Select("select count(*) from discuss where problemid=#{problemid}")
+    long selectCountDiscuss(@Param("problemid") int problemid);
 
     @Insert("insert into discuss(toid,problemid,username,content),")
     @Options(useGeneratedKeys = true, keyProperty = "id")

@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ljqiii.hairlessmain.dao.DiscussMapper">
 
-    <select id="selectCountDiscuss" resultType="java.util.HashMap">
+    <select id="batchSelectCountDiscuss" resultType="java.util.HashMap">
         select problemid, count(*) as count
         from discuss
         where problemid in

@@ -2,11 +2,11 @@ package com.ljqiii.hairlessmain.dao;
 
 import com.ljqiii.hairlesscommon.domain.Problem;
 import com.ljqiii.hairlesscommon.vo.CorrectLeaderboard;
+import com.ljqiii.hairlessmain.dataobject.ProblemAcceptance;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
-import java.util.HashMap;
 import java.util.List;
 
 @Mapper
@@ -32,5 +32,8 @@ public interface SubmitMapper {
     //个人提交总数
     @Select("select count(problemid) from submit where username=#{username} ")
     int selectSubmitCount(String username);
+
+    //正确率
+    List<ProblemAcceptance> acceptance(@Param("problems") List<Problem> problems);
 
 }
