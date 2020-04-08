@@ -130,6 +130,9 @@ public class ProblemServiceImpl implements ProblemService {
         String acceptance = acceptance(Arrays.asList(problem)).get(problem.getId());
         problemVO.setAcceptance(acceptance == null ? "-" : acceptance);
 
+        //提交总次数
+        problemVO.setSumbitedCount(submitMapper.selectSumProblemSubmitedCount(problem));
+
         //初始化代码
         ProblemCode problemCode = null;
         try {

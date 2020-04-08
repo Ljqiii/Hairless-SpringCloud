@@ -36,4 +36,7 @@ public interface SubmitMapper {
     //正确率
     List<ProblemAcceptance> acceptance(@Param("problems") List<Problem> problems);
 
+    //提交总数量
+    @Select("select count(*) from submit where problemid=#{problem.id}")
+    int selectSumProblemSubmitedCount(@Param("problem") Problem problem);
 }
