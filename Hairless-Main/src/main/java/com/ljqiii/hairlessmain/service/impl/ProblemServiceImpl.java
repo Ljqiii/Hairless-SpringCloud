@@ -20,10 +20,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -139,7 +136,7 @@ public class ProblemServiceImpl implements ProblemService {
             problemCode = JSONObject.parseObject(problem.getInitCode(), ProblemCode.class);
         } catch (Exception e) {
         }
-        problemVO.setInitProblemCode(problemCode);
+        problemVO.setInitProblemCode(problemCode.getProblemCodeFileItems() == null ? new ArrayList<>() : problemCode.getProblemCodeFileItems());
 
         return problemVO;
     }

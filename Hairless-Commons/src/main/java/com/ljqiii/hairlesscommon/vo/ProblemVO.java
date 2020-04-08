@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -20,5 +22,5 @@ public class ProblemVO {
     Long discusscount;//讨论量
     int favoriteCount;//喜欢数量
     int sumbitedCount;//提交数量
-    ProblemCode initProblemCode;//代码
+    List<ProblemCode.ProblemCodeFileItem> initProblemCode;//代码
 }
