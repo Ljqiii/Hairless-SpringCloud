@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.TreeSet;
 
 @Data
 @Builder
@@ -22,5 +23,5 @@ public class ProblemVO {
     Long discusscount;//讨论量
     int favoriteCount;//喜欢数量
     int sumbitedCount;//提交数量
-    List<ProblemCode.ProblemCodeFileItem> initProblemCode;//代码
+    TreeSet<ProblemCode.ProblemCodeFileItem> initProblemCode;//代码
 }

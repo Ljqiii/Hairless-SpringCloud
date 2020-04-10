@@ -136,7 +136,10 @@ public class ProblemServiceImpl implements ProblemService {
             problemCode = JSONObject.parseObject(problem.getInitCode(), ProblemCode.class);
         } catch (Exception e) {
         }
-        problemVO.setInitProblemCode(problemCode.getProblemCodeFileItems() == null ? new ArrayList<>() : problemCode.getProblemCodeFileItems());
+        if (problemCode != null) {
+
+            problemVO.setInitProblemCode(problemCode.getProblemCodeFileItems());
+        }
 
         return problemVO;
     }
