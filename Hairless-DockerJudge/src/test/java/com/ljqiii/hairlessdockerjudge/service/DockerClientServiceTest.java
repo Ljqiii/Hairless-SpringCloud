@@ -1,21 +1,24 @@
-package com.ljqiii.hairlessmain;
+package com.ljqiii.hairlessdockerjudge.service;
 
-
-import com.alibaba.fastjson.JSONObject;
 import com.ljqiii.hairlesscommon.domain.ProblemCode;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.TreeSet;
 
-class HairlessMainApplicationNoSpringTests {
+@SpringBootTest
+public class DockerClientServiceTest {
 
-    @Test
-    void contextLoads() {
+    @Autowired
+    DockerClientService dockerClientService;
+
+    ProblemCode problemCode;
+
+    @BeforeEach
+    public void setUp() throws Exception {
+
+
         String pomContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<project xmlns=\"http://maven.apache.org/POM/4.0.0\"\n" +
                 "         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" +
@@ -68,7 +71,7 @@ class HairlessMainApplicationNoSpringTests {
                 "    }\n" +
                 "}\n";
 
-        ProblemCode problemCode = new ProblemCode();
+        problemCode = new ProblemCode();
 
         ProblemCode.ProblemCodeFileItem src = ProblemCode.ProblemCodeFileItem.builder()
                 .filename("src")
@@ -119,7 +122,7 @@ class HairlessMainApplicationNoSpringTests {
         src_test.addChildren(src_test_java);
 
         ProblemCode.ProblemCodeFileItem src_test_java_Main = ProblemCode.ProblemCodeFileItem.builder()
-                .filename("Main.java")
+                .filename("MainTests.java")
                 .path("/src/test/java/")
                 .type("file")
                 .content(MainTestsContent)
@@ -145,12 +148,14 @@ class HairlessMainApplicationNoSpringTests {
         problemCode.addChildren(readme);
 
 
-        String s = JSONObject.toJSONString(problemCode);
-        String spretty = JSONObject.toJSONString(problemCode, true);
-        int a = 1;
     }
 
+    @Test
+    public void execProblemWithContainer() {
 
+        dockerClientService.execProblemWithContainer("maven:3-jdk-8", "test", problemCode, "mvn clean test".split(" "),
+                "/test", "/test", null, true);
+        int a1 = 12;
 
-
+    }
 }

@@ -8,7 +8,7 @@ import java.security.Principal;
 
 
 @Controller
-public class JudgeController {
+public class JudgeWsController {
 
     @MessageMapping("/r")
     @SendTo("/topic/say")

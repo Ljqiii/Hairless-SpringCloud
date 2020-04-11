@@ -12,6 +12,15 @@ public class ProblemCode {
     @Setter
     TreeSet<ProblemCodeFileItem> problemCodeFileItems;
 
+
+    public void addChildren(ProblemCodeFileItem problemCodeFileItem) {
+        if (this.problemCodeFileItems == null) {
+            problemCodeFileItems = new TreeSet<ProblemCodeFileItem>();
+        }
+        problemCodeFileItems.add(problemCodeFileItem);
+    }
+
+
     @Data
     @Builder
     @NoArgsConstructor
@@ -20,8 +29,19 @@ public class ProblemCode {
         String type;
         String path;
         String filename;
-        String content;
+        boolean readOnly;//前端是否只读
+        String content = "";
         TreeSet<ProblemCodeFileItem> children;
+
+        String writeWhilteList[];
+
+        public void addChildren(ProblemCodeFileItem problemCodeFileItem) {
+            if (this.children == null) {
+                children = new TreeSet<ProblemCodeFileItem>();
+            }
+            children.add(problemCodeFileItem);
+        }
+
 
         //保证folder排在前边
         @Override
