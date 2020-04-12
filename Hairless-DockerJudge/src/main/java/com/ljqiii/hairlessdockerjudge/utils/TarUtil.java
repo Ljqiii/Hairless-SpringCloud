@@ -50,16 +50,23 @@ public class TarUtil {
 
 
     //创建tar格式的空文件夹
-    public static ByteArrayInputStream buildEmptyDir(String path) throws ArchiveException, IOException {
+    public static ByteArrayInputStream buildEmptyDir(String path) {
         //文件夹以/结尾
         if (!path.endsWith("/")) {
             path += "/";
         }
 
-        ByteArrayInputStream byteArrayInputStream = TarOutStreamBuilder
-                .builder()
-                .addFileWithStringContent(path, "")
-                .buildInputStream();
+        ByteArrayInputStream byteArrayInputStream = null;
+        try {
+            byteArrayInputStream = TarOutStreamBuilder
+                    .builder()
+                    .addFileWithStringContent(path, "")
+                    .buildInputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ArchiveException e) {
+            e.printStackTrace();
+        }
         return byteArrayInputStream;
     }
 

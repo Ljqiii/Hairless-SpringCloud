@@ -18,5 +18,6 @@ public class Problem {
     String dockerImage;
     String initCode;
 
-
+    Integer memoryLimit;
+    String dockerCacheDir;
 }

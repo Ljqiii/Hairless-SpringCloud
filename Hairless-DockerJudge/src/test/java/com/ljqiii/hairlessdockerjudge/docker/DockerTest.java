@@ -14,6 +14,7 @@ import org.junit.Test;
 
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class DockerTest {
 
@@ -64,7 +65,7 @@ public class DockerTest {
 
         ContainerConfig build = ContainerConfig.builder()
                 .image("maven:3-jdk-8")
-                .cmd("mvn clean test >/a.txt 2>&1".split(" "))
+                .cmd("mvn clean test".split(" "))
                 .workingDir("/")
                 .build();
 
@@ -79,10 +80,21 @@ public class DockerTest {
 
         docker.startContainer(containerId);
 
-        LogStream logs = docker.logs(containerId, DockerClient.LogsParam.stdout(), DockerClient.LogsParam.stderr());
+        LogStream logs = docker.logs(containerId, DockerClient.LogsParam.stdout(), DockerClient.LogsParam.stderr(), DockerClient.LogsParam.follow());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ByteArrayOutputStream erroutputStream = new ByteArrayOutputStream();
         logs.attach(outputStream, erroutputStream);
+
+        ArrayList<Integer> a=new ArrayList<>();
+
+        new Thread(() -> {
+            a.add(outputStream.toByteArray().length);
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
 
 
         ContainerExit containerExit = docker.waitContainer(containerId);

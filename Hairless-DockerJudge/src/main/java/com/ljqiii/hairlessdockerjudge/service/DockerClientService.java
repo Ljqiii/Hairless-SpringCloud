@@ -2,38 +2,23 @@ package com.ljqiii.hairlessdockerjudge.service;
 
 
 import com.ljqiii.hairlesscommon.domain.ProblemCode;
-import com.spotify.docker.client.DockerClient;
-import com.spotify.docker.client.messages.ContainerCreation;
-import org.springframework.stereotype.Service;
+import com.ljqiii.hairlessdockerjudge.handler.ContainerLogsOutputHandler;
+import com.ljqiii.hairlessdockerjudge.interceptor.ContainerInterceptor;
 
 public interface DockerClientService {
 
 
-    String execProblemWithContainer(
-            String imageName,
-            String containerName,
+    Long execProblemWithContainer(
+            String imageName,//镜像名
+            String containerName,//生成的container名
+            int problemId,
             ProblemCode problemCode,
             String cmdList[],
-            String problemCodePath,
+            ContainerLogsOutputHandler containerLogsOutputHandler,//日志处理
+            ContainerInterceptor containerInterceptor,//container拦截器
+            String problemCodeDir,
             String workingDir,
-            String cacheKey,
-            boolean removeAfterExit);
-
-    String execProblemWithContainer(
-            String imageName,
-            String containerName,
-            ProblemCode problemCode,
-            String cmdList[],
-            String problemCodePath,
-            String cacheKey,
-            boolean removeAfterExit);
-
-
-
-
-
-
-
-
+            String cacheKey,//缓存文件夹key
+            boolean removeAfterExit);//退出时删除Container
 
 }

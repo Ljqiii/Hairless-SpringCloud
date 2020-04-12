@@ -1,6 +1,7 @@
 package com.ljqiii.hairlessdockerjudge.service;
 
 import com.ljqiii.hairlesscommon.domain.ProblemCode;
+import com.ljqiii.hairlessdockerjudge.handler.ContainerLogsOutputHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -153,8 +154,15 @@ public class DockerClientServiceTest {
     @Test
     public void execProblemWithContainer() {
 
-        dockerClientService.execProblemWithContainer("maven:3-jdk-8", "test", problemCode, "mvn clean test".split(" "),
-                "/test", "/test", null, true);
+
+        dockerClientService.execProblemWithContainer("maven:3-jdk-8", "test", 2, problemCode,
+                "mvn clean test".split(" "),
+                new ContainerLogsOutputHandler() {
+                    @Override
+                    public void handle(String logsline) {
+                        System.out.println(logsline);
+                    }
+                }, null, "/test", "/test", null, true);
         int a1 = 12;
 
     }
