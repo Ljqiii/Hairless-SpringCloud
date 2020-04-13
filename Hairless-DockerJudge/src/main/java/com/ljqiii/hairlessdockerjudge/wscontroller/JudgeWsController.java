@@ -15,4 +15,10 @@ public class JudgeWsController {
     public String restr(Principal principal, String r) {
         return "receive";
     }
+
+    @MessageMapping("/all")
+    public String commonWs() {
+        return "all message";
+    }
+
 }

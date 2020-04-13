@@ -97,6 +97,20 @@ spring:
             - StripPrefix=1
 
 
+        - id: hairless-dockerjudge_wsinfo
+          uri: http://127.0.0.1:7084
+          predicates:
+            - Path=/ws/dockerjudge/**
+          filters:
+            - TokenRelay=
+
+        - id: hairless-dockerjudge_ws
+          uri: ws://127.0.0.1:7084
+          predicates:
+            - Path=/ws/dockerjudge/**
+          filters:
+            - TokenRelay=
+
         - id: hairless-vue
           uri: http://127.0.0.1:8080
           predicates:
