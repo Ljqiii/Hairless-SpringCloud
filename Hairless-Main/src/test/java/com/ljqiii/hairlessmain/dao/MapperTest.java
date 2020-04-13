@@ -118,6 +118,8 @@ public class MapperTest {
 
     @Test
     public void selectProblemById() {
+        Problem problem = problemMapper.selectProblemById(2);
+        int a1=1;
     }
 
     @Test

@@ -162,7 +162,7 @@ public class DockerClientServiceTest {
                     public void handle(String logsline) {
                         System.out.println(logsline);
                     }
-                }, null, "/test", "/test", null, true);
+                }, null, "/test", "/test", true);
         int a1 = 12;
 
     }

@@ -18,7 +18,6 @@ public interface DockerClientService {
             ContainerInterceptor containerInterceptor,//container拦截器
             String problemCodeDir,
             String workingDir,
-            String cacheKey,//缓存文件夹key
             boolean removeAfterExit);//退出时删除Container
 
 }

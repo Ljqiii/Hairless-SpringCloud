@@ -20,6 +20,7 @@ import com.spotify.docker.client.messages.ContainerExit;
 import com.spotify.docker.client.messages.HostConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -35,6 +36,9 @@ public class DockerClientServiceImpl implements DockerClientService {
 
     @Autowired
     TarCacheService tarCacheService;
+
+    @Autowired
+    SimpMessagingTemplate simpMessagingTemplate;
 
 
     public DockerClient getDockerClient() {
@@ -52,7 +56,6 @@ public class DockerClientServiceImpl implements DockerClientService {
                                          ContainerInterceptor containerInterceptor,
                                          String problemCodeDir,
                                          String workingDir,
-                                         String cacheKey,
                                          boolean removeAfterExit) {
 
         Problem problem = problemMapper.selectProblemById(problemId);
@@ -61,7 +64,7 @@ public class DockerClientServiceImpl implements DockerClientService {
         if (!dockerCacheDir.endsWith("/")) {
             dockerCacheDir = dockerCacheDir + "/";
         }
-        String redisCacheKey =MessageFormat.format(NameConstants.Docker_CacheDir_Key, String.valueOf(problemId), dockerCacheDir);//redis缓存的key
+        String redisCacheKey = MessageFormat.format(NameConstants.Docker_CacheDir_Key, String.valueOf(problemId), dockerCacheDir);//redis缓存的key
 
         ContainerConfig.Builder builder = ContainerConfig.builder();
         builder.image(imageName);
@@ -92,6 +95,9 @@ public class DockerClientServiceImpl implements DockerClientService {
 
         try {
             dockerClient = getDockerClient();
+            //拦截
+            if (containerInterceptor != null) containerInterceptor.beforeContainerCreate(dockerClient);
+
             ContainerCreation container = dockerClient.createContainer(containerConfig, containerName);
             containerId = container.id();
             log.info("Docker container created, id: {}", containerId);
@@ -120,6 +126,12 @@ public class DockerClientServiceImpl implements DockerClientService {
             Long exitCode = containerExit.statusCode();
             log.info("Container [{}] exit with exitCode {}", containerId, exitCode);
 
+
+            //拦截
+            if (containerInterceptor != null)
+                containerInterceptor.containerEnd(dockerClient, containerId, exitCode.intValue());
+
+
             return exitCode;
         } catch (DockerException e) {
             log.error("docker exception", e);
@@ -138,7 +150,9 @@ public class DockerClientServiceImpl implements DockerClientService {
 
             //关闭bufferedReader，结束while循环，结束线程
             try {
-                bufferedReader.get().close();
+                if (bufferedReader.get() != null) {
+                    bufferedReader.get().close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -193,11 +207,8 @@ public class DockerClientServiceImpl implements DockerClientService {
         if (!tarCacheService.hasCache(String.valueOf(redisCacheKey))) {
             log.info("Container[{}] saving Cache, cacheKey:{}, dir:{}", containerId, redisCacheKey, dockerCacheDir);
             try {
-
                 tarCacheService.set(String.valueOf(redisCacheKey), dockerClient.archiveContainer(containerId, dockerCacheDir));
-            } catch (DockerException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -206,6 +217,7 @@ public class DockerClientServiceImpl implements DockerClientService {
 
     /**
      * 删除container
+     *
      * @param dockerClient
      * @param containerId
      */

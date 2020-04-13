@@ -1,5 +1,6 @@
 package com.ljqiii.hairlesscommon.domain;
 
+import com.ljqiii.hairlesscommon.constants.LangConstants;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,4 +21,6 @@ public class Problem {
 
     Integer memoryLimit;
     String dockerCacheDir;
+    String lang;
+    String cmd;
 }
