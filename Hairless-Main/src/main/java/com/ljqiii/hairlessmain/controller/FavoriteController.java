@@ -1,19 +1,20 @@
 package com.ljqiii.hairlessmain.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.ljqiii.hairlesscommon.domain.FavoriteFolder;
 import com.ljqiii.hairlesscommon.enums.ResultEnum;
 import com.ljqiii.hairlesscommon.vo.HairlessResponse;
 import com.ljqiii.hairlesscommon.vo.Result;
 import com.ljqiii.hairlessmain.form.AddFavoriteProblemForm;
+import com.ljqiii.hairlessmain.form.NewFavoriteFolderForm;
 import com.ljqiii.hairlessmain.service.FavoriteService;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+
+import static com.ljqiii.hairlesscommon.enums.ResultEnum.FAVORITE_FOLDER_EXIST;
 
 @RestController
 public class FavoriteController {
@@ -64,4 +65,22 @@ public class FavoriteController {
         return response;
     }
 
+    //新建收藏夹
+    @PostMapping("/newfavoritefolder")
+    @PreAuthorize("hasRole('ROLE_NORMALUSER')")
+    public HairlessResponse<Void> newFavoriteFolder(Principal principal,
+                                                    @RequestBody NewFavoriteFolderForm newFavoriteFolderForm) {
+        String userName = principal.getName();
+        String folderbtnName = newFavoriteFolderForm.getFolderName();
+        boolean isPublic = newFavoriteFolderForm.getIsPublic();
+
+        HairlessResponse<Void> response = new HairlessResponse<>();
+        try {
+            favoriteService.newFavoriteFolder(userName, folderbtnName, isPublic);
+            response.setCodeMsg(ResultEnum.OK);
+        } catch (Exception e) {
+            response.setCodeMsg(FAVORITE_FOLDER_EXIST);
+        }
+        return response;
+    }
 }

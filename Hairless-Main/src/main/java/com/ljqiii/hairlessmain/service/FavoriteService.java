@@ -16,4 +16,7 @@ public interface FavoriteService {
     Result addFavaritePeoblem(String userName, ArrayList<Integer> favoriteFolderId, int problemid);
 
     List<Integer> problemFavoriteFolderFist(int problemId, String userName);
+
+    int newFavoriteFolder(String username, String folderName, boolean isPublic);
+
 }

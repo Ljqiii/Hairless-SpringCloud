@@ -14,6 +14,9 @@ public interface FavoriteMapper {
     @Select("select  * from favoritefolder where  username=#{username}")
     List<FavoriteFolder> selectFavoriteFolder(@Param("username") String username);
 
+    @Select("select count(*) from favoritefolder where username=#{username} and name=#{folderName}")
+    int selectCountUserNameFavoriteFolder(@Param("username") String username, @Param("folderName") String folderName);
+
     @Insert("insert into favoritefolder(username,name,ispublic)values (#{userName} ,#{name} ,#{isPublic} )")
     int insertFavoriteFolder(FavoriteFolder favoriteFolder);
 
@@ -44,5 +47,6 @@ public interface FavoriteMapper {
 
     @Select("select count(*) from favorite where problemid=#{problemid} and username=#{username}")
     int selectCountUserNameProblem(@Param("problemid") int problemid, @Param("username") String username);
+
 
 }

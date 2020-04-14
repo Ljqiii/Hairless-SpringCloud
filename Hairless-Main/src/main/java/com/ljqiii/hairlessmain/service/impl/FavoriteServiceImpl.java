@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -81,6 +82,23 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Override
     public List<Integer> problemFavoriteFolderFist(int problemId, String userName) {
         return favoriteMapper.selectProblemFavoriteFolderList(userName, problemId);
+    }
+
+    @Override
+    public int newFavoriteFolder(String username, String folderName, boolean isPublic) {
+        int i1 = favoriteMapper.selectCountUserNameFavoriteFolder(username, folderName);
+        if (i1 == 1) {
+            throw new IllegalArgumentException("文件夹已存在");
+        }
+        FavoriteFolder favoriteFolder = FavoriteFolder.builder()
+                .name(folderName)
+                .userName(username)
+                .isPublic(isPublic)
+                .createtime(new Date())
+                .build();
+
+        int i = favoriteMapper.insertFavoriteFolder(favoriteFolder);
+        return favoriteFolder.getId();
     }
 
     private Result addFav(Problem problem, String userName, ArrayList<Integer> favoriteFolderIds) {
