@@ -1,5 +1,7 @@
 package com.ljqiii.hairlessmain.service;
 
+import com.github.pagehelper.Page;
+import com.ljqiii.hairlesscommon.domain.Problem;
 import com.ljqiii.hairlesscommon.vo.PageData;
 import com.ljqiii.hairlesscommon.vo.ProblemListVO;
 import com.ljqiii.hairlesscommon.vo.ProblemVO;
@@ -7,6 +9,8 @@ import com.ljqiii.hairlesscommon.vo.ProblemVO;
 import java.util.List;
 
 public interface ProblemService {
+
+    PageData<List<ProblemListVO>> setProblemVOData(String username, Page<Problem> problems);
 
     PageData<List<ProblemListVO>> listProblem(String username, String category, int pageNum, int pageCount);
 

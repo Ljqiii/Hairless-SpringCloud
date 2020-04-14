@@ -16,4 +16,26 @@
             #{item}
         </foreach>
     </delete>
+    <select id="selectFavoriteProblemByUserNameAndFavoriteFolderId"
+            resultType="com.ljqiii.hairlesscommon.domain.Problem">
+
+        select problem.* from problem,favorite
+        <if test="publicFlag==true and favoritefolderid!=-1">
+            ,favoritefolder
+        </if>
+        where problem.id=favorite.problemid and
+        favorite.favoritefolderid=#{favoritefolderid} and favorite.username=#{username}
+        <if test="publicFlag==true and favoritefolderid!=-1">
+            and favoritefolder.id=favorite.favoritefolderid
+            and favoritefolder.ispublic=1
+        </if>
+
+    </select>
+    <select id="selectFavoriteFolder" resultType="com.ljqiii.hairlesscommon.domain.FavoriteFolder">
+        select * from favoritefolder where username=#{username}
+        <if test="publicFlag">
+            and ispublic=1
+        </if>
+
+    </select>
 </mapper>

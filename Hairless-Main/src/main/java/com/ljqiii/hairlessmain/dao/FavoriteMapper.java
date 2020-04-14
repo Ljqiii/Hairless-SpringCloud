@@ -11,8 +11,8 @@ import java.util.List;
 @Mapper
 public interface FavoriteMapper {
 
-    @Select("select  * from favoritefolder where  username=#{username}")
-    List<FavoriteFolder> selectFavoriteFolder(@Param("username") String username);
+
+    List<FavoriteFolder> selectFavoriteFolder(@Param("username") String username,@Param("publicFlag") boolean publicFlag);
 
     @Select("select count(*) from favoritefolder where username=#{username} and name=#{folderName}")
     int selectCountUserNameFavoriteFolder(@Param("username") String username, @Param("folderName") String folderName);
@@ -48,5 +48,5 @@ public interface FavoriteMapper {
     @Select("select count(*) from favorite where problemid=#{problemid} and username=#{username}")
     int selectCountUserNameProblem(@Param("problemid") int problemid, @Param("username") String username);
 
-
+    List<Problem> selectFavoriteProblemByUserNameAndFavoriteFolderId(@Param("username") String username, @Param("favoritefolderid") int favoritefolderid, @Param("publicFlag") boolean publicFlag);
 }

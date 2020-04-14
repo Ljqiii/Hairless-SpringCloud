@@ -1,11 +1,16 @@
 package com.ljqiii.hairlessmain.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.ljqiii.hairlesscommon.domain.FavoriteFolder;
 import com.ljqiii.hairlesscommon.domain.Problem;
+import com.ljqiii.hairlesscommon.vo.PageData;
+import com.ljqiii.hairlesscommon.vo.ProblemListVO;
 import com.ljqiii.hairlesscommon.vo.Result;
 import com.ljqiii.hairlessmain.dao.FavoriteMapper;
 import com.ljqiii.hairlessmain.dao.ProblemMapper;
 import com.ljqiii.hairlessmain.service.FavoriteService;
+import com.ljqiii.hairlessmain.service.ProblemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +27,14 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Autowired
     ProblemMapper problemMapper;
 
+    @Autowired
+    ProblemService problemService;
+
     @Override
-    public List<FavoriteFolder> listFavoriteFolder(String username) {
+    public List<FavoriteFolder> listFavoriteFolder(String username, boolean publicFlag) {
         List<FavoriteFolder> allFavoriteFolders = new ArrayList<>();
         allFavoriteFolders.add(FavoriteFolder.builder().id(-1).name("默认收藏夹").userName(username).isPublic(true).build());
-        List<FavoriteFolder> favoriteFolders = favoriteMapper.selectFavoriteFolder(username);
+        List<FavoriteFolder> favoriteFolders = favoriteMapper.selectFavoriteFolder(username,publicFlag);
         allFavoriteFolders.addAll(favoriteFolders);
         return allFavoriteFolders;
     }
@@ -99,6 +107,14 @@ public class FavoriteServiceImpl implements FavoriteService {
 
         int i = favoriteMapper.insertFavoriteFolder(favoriteFolder);
         return favoriteFolder.getId();
+    }
+
+    @Override
+    public PageData<List<ProblemListVO>> favoriteFolderProblems(String username, int favoritefolderid, int pageNum, int pageCount, boolean publicFlag) {
+        Page<Problem> problems = PageHelper.startPage(pageNum, pageCount)
+                .doSelectPage(() -> favoriteMapper.selectFavoriteProblemByUserNameAndFavoriteFolderId(username, favoritefolderid,publicFlag));
+        PageData<List<ProblemListVO>> listPageData = problemService.setProblemVOData(username, problems);
+        return listPageData;
     }
 
     private Result addFav(Problem problem, String userName, ArrayList<Integer> favoriteFolderIds) {

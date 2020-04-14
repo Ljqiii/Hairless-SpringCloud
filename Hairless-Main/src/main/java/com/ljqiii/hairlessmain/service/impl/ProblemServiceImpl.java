@@ -38,14 +38,15 @@ public class ProblemServiceImpl implements ProblemService {
     @Autowired
     FavoriteMapper favoriteMapper;
 
-    @Override
-    public PageData<List<ProblemListVO>> listProblem(String username, String category, int pageNum, int pageCount) {
+    public PageData<List<ProblemListVO>> setProblemVOData(String username, Page<Problem> problems) {
         PageData<List<ProblemListVO>> pageData = new PageData<>();
 
-        Page<Problem> problems = PageHelper.startPage(pageNum, pageCount)
-                .doSelectPage(() -> problemMapper.selectProblem(category));
-
         if (problems.getResult().isEmpty()) {
+            pageData.setPageInfo(PageInfo.builder()
+                    .pageSize(problems.getPageSize())
+                    .pageNum(1)
+                    .total(0)
+                    .build());
             return pageData;
         }
 
@@ -94,6 +95,7 @@ public class ProblemServiceImpl implements ProblemService {
         }).collect(Collectors.toList());
 
         pageData.setContent(problemVoList);
+
         pageData.setPageInfo(PageInfo.builder()
                 .pageSize(problems.getPageSize())
                 .pageNum(problems.getPageNum())
@@ -101,6 +103,16 @@ public class ProblemServiceImpl implements ProblemService {
                 .build());
 
         return pageData;
+
+    }
+
+    @Override
+    public PageData<List<ProblemListVO>> listProblem(String username, String category, int pageNum, int pageCount) {
+
+        Page<Problem> problems = PageHelper.startPage(pageNum, pageCount)
+                .doSelectPage(() -> problemMapper.selectProblem(category));
+
+        return setProblemVOData(username,problems);
     }
 
     @Override
