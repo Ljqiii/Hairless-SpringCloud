@@ -4,10 +4,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.ljqiii.hairlesscommon.enums.ResultEnum;
 import com.ljqiii.hairlesscommon.vo.CorrectLeaderboard;
 import com.ljqiii.hairlesscommon.vo.HairlessResponse;
+import com.ljqiii.hairlesscommon.vo.SubmitedItemVO;
 import com.ljqiii.hairlessmain.service.SubmitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
@@ -48,6 +50,17 @@ public class SubmitController {
         resultList.add(errorcount);
         response.setCodeMsg(ResultEnum.OK);
         response.setData(resultList);
+        return response;
+    }
+
+    @GetMapping("/getallsubmit")
+    @PreAuthorize("hasRole('ROLE_NORMALUSER')")
+    public HairlessResponse<List<SubmitedItemVO>> getAllSubmit(Principal principal, @RequestParam("problemid") int problemid) {
+        String name = principal.getName();
+        List<SubmitedItemVO> allSubmit = submitService.getAllSubmit(name, problemid);
+        HairlessResponse<List<SubmitedItemVO>> response = new HairlessResponse<>();
+        response.setData(allSubmit);
+        response.setCodeMsg(ResultEnum.OK);
         return response;
     }
 }

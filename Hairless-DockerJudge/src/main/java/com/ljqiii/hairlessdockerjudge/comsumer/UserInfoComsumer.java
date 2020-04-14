@@ -7,6 +7,7 @@ import com.ljqiii.hairlesscommon.constants.NameConstants;
 import com.ljqiii.hairlesscommon.constants.WsDestinationConstants;
 import com.ljqiii.hairlesscommon.vo.wsvo.JudgeStepMessage;
 import com.ljqiii.hairlesscommon.vo.wsvo.JudgeLogsMessage;
+import com.ljqiii.hairlessdockerjudge.dao.SubmitMapper;
 import com.ljqiii.hairlessdockerjudge.handler.ContainerLogsOutputHandler;
 import com.ljqiii.hairlesscommon.domain.amqpdomain.SubmitedProblemItem;
 import com.ljqiii.hairlessdockerjudge.interceptor.ContainerInterceptor;
@@ -27,6 +28,9 @@ import java.text.MessageFormat;
 @Component
 @RabbitListener(queues = "SubmitedProblem")
 public class UserInfoComsumer {
+
+    @Autowired
+    SubmitMapper submitMapper;
 
 
     @Autowired
@@ -132,9 +136,13 @@ public class UserInfoComsumer {
                 JudgeStepMessage.JudgeStepMessageBuilder builder = JudgeStepMessage.builder();
                 builder.submitId(submitId);
                 if (exitCode == 0) {
+                    //更新数据库结果
+                    submitMapper.updateResult(submitId, "success");
                     builder.flag("ok");
                     builder.event(JudgeStepConstants.ExecuteEndWithSuccessfulResult);
                 } else {
+                    //更新数据库结果
+                    submitMapper.updateResult(submitId, "error");
                     builder.flag("error");
                     builder.event(JudgeStepConstants.ExecuteEndWithFailResult);
                 }

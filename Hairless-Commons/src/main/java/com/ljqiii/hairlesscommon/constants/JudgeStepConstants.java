@@ -18,7 +18,7 @@ public class JudgeStepConstants {
     public static String TestFailed = "测试失败";
 
     public static String ExecuteEndWithSuccessfulResult = "执行结束，正确";
-    public static String ExecuteEndWithFailResult = "执行结束，错误";
+    public static String ExecuteEndWithFailResult = "执行结束，结果错误";
 
 
 }
