@@ -33,9 +33,9 @@ spring:
             authorization-grant-type: authorization_code
         provider:
           custom-provider:
-            token-uri: http://hairless.ljqiii.xyz:7081/oauth/token
-            authorization-uri: http://hairless.ljqiii.xyz:7081/oauth/authorize
-            user-info-uri: http://hairless.ljqiii.xyz:7081/userinfo
+            token-uri: http://hairlessauth.ljqiii.xyz:7081/oauth/token
+            authorization-uri: http://hairlessauth.ljqiii.xyz:7081/oauth/authorize
+            user-info-uri: http://hairlessauth.ljqiii.xyz:7081/userinfo
             user-name-attribute: name
 
   cloud:
