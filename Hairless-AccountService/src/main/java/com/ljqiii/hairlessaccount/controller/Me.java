@@ -3,6 +3,7 @@ package com.ljqiii.hairlessaccount.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.ljqiii.hairlessaccount.client.NotificationClient;
 import com.ljqiii.hairlessaccount.service.AccountService;
+import com.ljqiii.hairlessaccount.service.VipBillService;
 import com.ljqiii.hairlesscommon.constants.RoleConstants;
 import com.ljqiii.hairlesscommon.domain.User;
 import com.ljqiii.hairlesscommon.enums.ResultEnum;
@@ -26,6 +27,9 @@ public class Me {
 
     @Autowired
     NotificationClient notificationClient;
+
+    @Autowired
+    VipBillService vipBillService;
 
     @GetMapping("/pointdetails")
     public Principal pointDetails(Principal principal) {
@@ -51,7 +55,7 @@ public class Me {
             User user = accountService.getUserByUserName(name);
             data.put("avatar", user.getAvatar());
             data.put("nickname", user.getNickName());
-            data.put("isvip", user.isVip());
+            data.put("isvip", vipBillService.isVipNow(user.getUserName()));
             data.put("isAdmin", roles.contains(RoleConstants.Admin));
         } else {
             response.setCodeMsg(ResultEnum.SERVER_ERROR);

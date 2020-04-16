@@ -14,7 +14,8 @@ public enum ResultEnum {
     VIP_ONLY(1001, "仅Vip用户可以查看"),
     PROBLEM_DONOT_EXIST(1002, "问题不存在"),
     VIPPROBLEM_UNLOGIN(1003, "Vip题目需要登录后才能查看"),
-    FAVORITE_FOLDER_EXIST(1004, "问题不存在");
+    FAVORITE_FOLDER_EXIST(1004, "问题不存在"),
+    VIPBILLID_DONOT_EXIST(1005, "vip订单号不存在");
 
     private Integer code;
     private String message;
