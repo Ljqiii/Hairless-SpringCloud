@@ -76,6 +76,12 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
                 .scopes("ui", "server")
 
                 .and()
+                .withClient("forum-service")
+                .secret(passwordEncoder().encode("pw"))
+                .authorizedGrantTypes("client_credentials", "refresh_token", "password")
+                .scopes("ui", "server")
+
+                .and()
                 .withClient("gateway")
                 .secret(passwordEncoder().encode("pw"))
                 .authorizedGrantTypes("authorization_code")

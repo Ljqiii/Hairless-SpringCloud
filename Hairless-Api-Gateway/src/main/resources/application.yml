@@ -88,6 +88,14 @@ spring:
             - TokenRelay=
             - StripPrefix=2
 
+        - id: forum-service
+          uri: http://127.0.0.1:7088
+          predicates:
+            - Path=/api/forum/**
+          filters:
+            - TokenRelay=
+            - StripPrefix=2
+
         - id: hairless-main
           uri: http://127.0.0.1:7087
           predicates:

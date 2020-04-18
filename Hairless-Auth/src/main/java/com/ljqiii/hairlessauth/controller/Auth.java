@@ -7,6 +7,9 @@ import com.ljqiii.hairlessauth.dao.VipBillMapper;
 import com.ljqiii.hairlessauth.service.UserService;
 import com.ljqiii.hairlessauth.form.UserReg;
 import com.ljqiii.hairlesscommon.constants.RoleConstants;
+import com.ljqiii.hairlesscommon.enums.ResultEnum;
+import com.ljqiii.hairlesscommon.exception.UserException;
+import com.ljqiii.hairlesscommon.vo.HairlessResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,9 +78,20 @@ public class Auth {
     }
 
     @PostMapping("/register")
-    public String register(@Valid UserReg userReg) {
-        userService.newUser(userReg);
-        return "ok";
+    public HairlessResponse<Void> register(@RequestBody @Valid UserReg userReg) {
+        HairlessResponse<Void> response = new HairlessResponse<>();
+        try {
+            userService.newUser(userReg);
+            response.setCodeMsg(ResultEnum.OK);
+            return response;
+        } catch (UserException e) {
+            response.setCodeMsg(ResultEnum.SERVER_ERROR);
+            response.setMsg(e.getMessage());
+            return response;
+        } catch (Exception e) {
+            response.setCodeMsg(ResultEnum.SERVER_ERROR);
+            return response;
+        }
     }
 
     @GetMapping("/test")

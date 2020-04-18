@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljqiii.hairlessforum.dao.PostMapper">
+
+    <resultMap id="postVoRersultMap" type="com.ljqiii.hairlesscommon.vo.PostVO">
+        <id column="postid" property="id"/>
+        <result column="postcontent" property="content"/>
+        <result column="createtime" property="createTime"/>
+        <result column="nickname" property="userNickName"/>
+        <result column="username" property="username"/>
+        <result column="avatarurl" property="avatarUrl"/>
+        <result column="title" property="title"/>
+
+        <collection property="topicNames" ofType="java.lang.String">
+            <constructor>
+                <arg column="posttopicname"/>
+            </constructor>
+        </collection>
+    </resultMap>
+
+
+    <select id="selectPost" resultMap="postVoRersultMap">
+        select post.id postid,
+        post.title title,
+        post.content postcontent,
+        date_format(post.createtime, '%Y-%m-%d %h:%i') createtime,
+        user.nickname nickname,
+        user.username username,
+        user.avatar avatarurl,
+        posttopic.name posttopicname
+
+        from post
+        join
+        user on post.username = user.username
+        <if test="postid!=null">
+            and post.id=#{postid}
+        </if>
+        left join
+        post_topic on post.id = post_topic.postid
+        left join
+        posttopic on post_topic.topicid = posttopic.id
+        where 1
+        <if test="!selectDeleted">
+            and post.isdel = false
+        </if>
+        <if test="posttopicid!=null">
+            and post_topic.topicid=#{posttopicid}
+        </if>
+
+    </select>
+
+    <update id="softDeletePost">
+
+        update post set isdel=true where id=#{postid}
+        <if test="!forcedel">
+            and username=#{username}
+        </if>
+
+    </update>
+
+</mapper>

@@ -22,6 +22,7 @@
         <module>Hairless-NotificationService</module>
         <module>Hairless-AccountService</module>
         <module>Hairless-Main</module>
+        <module>Hairless-Forum</module>
     </modules>
 
 

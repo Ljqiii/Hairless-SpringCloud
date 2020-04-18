@@ -8,6 +8,7 @@ import com.ljqiii.hairlesscommon.enums.PointEventEnum;
 import com.ljqiii.hairlesscommon.exception.UserException;
 import com.ljqiii.hairlessauth.form.UserReg;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +52,7 @@ public class UserService {
 
         Integer userId = user.getId();
 
-        userRoleMapper.insert(userId, userRoleMapper.selectRoleByName(userReg.getRole()).getId());
+        userRoleMapper.insert(userId, userRoleMapper.selectRoleByName("ROLE_" + userReg.getRole()).getId());
         return user;
     }
 

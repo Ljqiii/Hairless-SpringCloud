@@ -58,6 +58,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     UserService userService;
 
+    @Value("${hairless.home}")
+    String hairlessHome;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -108,7 +110,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //            writer.flush();
 //        });
 
-//        http.logout().logoutSuccessHandler(new LogoutSuccessHandler() {
+        http.logout().logoutSuccessUrl(hairlessHome);
+//                .logoutSuccessHandler(new LogoutSuccessHandler() {
 //            @Override
 //            public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 //                HairlessResponse<Void> hairlessResponse = new HairlessResponse<>();
