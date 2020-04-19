@@ -6,7 +6,6 @@ import com.ljqiii.hairlesscommon.enums.ResultEnum;
 import com.ljqiii.hairlesscommon.vo.HairlessResponse;
 import com.ljqiii.hairlesscommon.vo.PageData;
 import com.ljqiii.hairlesscommon.vo.PostVO;
-import com.ljqiii.hairlessforum.dao.PostMapper;
 import com.ljqiii.hairlessforum.form.DeletePostForm;
 import com.ljqiii.hairlessforum.form.PushPostForm;
 import com.ljqiii.hairlessforum.service.PostService;
@@ -14,11 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -30,13 +25,19 @@ public class PostController {
     @Autowired
     PostService postService;
 
-    @GetMapping("/pushpost")
+    @PostMapping("/pushpost")
     @PreAuthorize("hasRole('ROLE_NORMALUSER')")
     HairlessResponse<JSONObject> pushPost(Principal principal,
-                                          PushPostForm pushPostForm) {
-//postService.
-        return null;
+                                          @RequestBody PushPostForm pushPostForm) {
+        Integer postid = postService.newPost(principal.getName(), pushPostForm.getPostTopic(), pushPostForm.getPostTitle(), pushPostForm.getPostContent());
 
+        HairlessResponse<JSONObject> response = new HairlessResponse<>();
+        JSONObject responsejson = new JSONObject();
+
+        responsejson.put("postid", postid);
+        response.setData(responsejson);
+        response.setCodeMsg(ResultEnum.OK);
+        return response;
     }
 
     @PostMapping("/deletepost")
@@ -73,7 +74,7 @@ public class PostController {
             selecetDeleted = true;
         }
         HairlessResponse<PageData<List<PostVO>>> response = new HairlessResponse<>();
-        PageData<List<PostVO>> listPageData = postService.setProblemVOData(selecetDeleted, postId, postTopicId, pageNum, pageCount);
+        PageData<List<PostVO>> listPageData = postService.listPost(selecetDeleted, postId, postTopicId, pageNum, pageCount);
 
         response.setCodeMsg(ResultEnum.OK);
         response.setData(listPageData);

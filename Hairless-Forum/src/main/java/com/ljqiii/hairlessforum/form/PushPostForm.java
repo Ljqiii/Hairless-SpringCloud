@@ -6,5 +6,8 @@ import java.util.List;
 
 @Data
 public class PushPostForm {
-    int postId;
+    Integer postTopic;
+    String postTitle;
+    String postContent;
+
 }

@@ -18,5 +18,5 @@ public class PostComment {
     String userName;
     Date createTime;
     boolean isDel;
-
+    String content;
 }

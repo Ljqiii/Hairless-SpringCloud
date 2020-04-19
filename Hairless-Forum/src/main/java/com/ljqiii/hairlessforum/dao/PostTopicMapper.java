@@ -25,4 +25,8 @@ public interface PostTopicMapper {
 
     @Select("select count(*) from posttopic where name=#{name}")
     int selecetCountPostTopic(@Param("name") String name);
+
+    @Insert("insert into post_topic(postid,topicid)values(#{postid},#{topicid})")
+    int insertPost_Topic(@Param("postid")int postid,@Param("topicid")int topicid);
+
 }

@@ -9,13 +9,13 @@ import java.util.List;
 
 @Mapper
 public interface PostMapper {
-    @Insert("insert into post(topicid,title,username,content,createtime)values(#{topicid},#{title},#{username},#{content},#{createtime})")
+    @Insert("insert into post(title,username,content,createtime)values(#{title},#{userName},#{content},#{createTime})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insertPost(Post post);
-
 
     int softDeletePost(@Param("forcedel") boolean forcedel, @Param("postid") int postid, @Param("username") String username);
 
     List<PostVO> selectPost(@Param("selectDeleted") boolean selectDeleted, @Param("postid") Integer postid, @Param("posttopicid") Integer posttopicid);
+
 
 }
