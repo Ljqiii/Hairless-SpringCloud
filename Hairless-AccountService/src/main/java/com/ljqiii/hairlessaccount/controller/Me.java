@@ -57,6 +57,7 @@ public class Me {
             data.put("nickname", user.getNickName());
             data.put("isvip", vipBillService.isVipNow(user.getUserName()));
             data.put("isAdmin", roles.contains(RoleConstants.Admin));
+            data.put("isTeacher", roles.contains(RoleConstants.Teacher));
         } else {
             response.setCodeMsg(ResultEnum.SERVER_ERROR);
         }

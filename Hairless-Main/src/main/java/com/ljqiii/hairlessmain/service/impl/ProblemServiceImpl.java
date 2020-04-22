@@ -112,7 +112,7 @@ public class ProblemServiceImpl implements ProblemService {
         Page<Problem> problems = PageHelper.startPage(pageNum, pageCount)
                 .doSelectPage(() -> problemMapper.selectProblem(category));
 
-        return setProblemVOData(username,problems);
+        return setProblemVOData(username, problems);
     }
 
     @Override
@@ -159,6 +159,15 @@ public class ProblemServiceImpl implements ProblemService {
     @Override
     public boolean isVipProblem(int problemid) {
         return problemMapper.selectIfOnlyVipByProblemId(problemid);
+    }
+
+    @Override
+    public Integer newProblem(Problem problem) {
+        int i = problemMapper.insertProblem(problem);
+        if (i == 1) {
+            return problem.getId();
+        }
+        return null;
     }
 
     //计算正确率

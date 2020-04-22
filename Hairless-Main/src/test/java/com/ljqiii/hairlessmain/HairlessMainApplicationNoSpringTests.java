@@ -100,6 +100,7 @@ class HairlessMainApplicationNoSpringTests {
                 .filename("Main.java")
                 .path("/src/main/java/")
                 .content(MainContent)
+                .readOnly(false)
                 .type("file")
                 .build();
         src_main_java.addChildren(src_main_java_Main);
@@ -119,8 +120,9 @@ class HairlessMainApplicationNoSpringTests {
         src_test.addChildren(src_test_java);
 
         ProblemCode.ProblemCodeFileItem src_test_java_Main = ProblemCode.ProblemCodeFileItem.builder()
-                .filename("Main.java")
+                .filename("MainTests.java")
                 .path("/src/test/java/")
+                .readOnly(true)
                 .type("file")
                 .content(MainTestsContent)
                 .build();
@@ -136,6 +138,7 @@ class HairlessMainApplicationNoSpringTests {
         ProblemCode.ProblemCodeFileItem readme = ProblemCode.ProblemCodeFileItem.builder()
                 .filename("README.md")
                 .path("/")
+                .readOnly(false)
                 .type("file")
                 .content("change me please")
                 .build();

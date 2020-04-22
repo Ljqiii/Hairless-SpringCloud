@@ -11,7 +11,10 @@ import com.ljqiii.hairlesscommon.vo.wsvo.JudgeStepMessage;
 import com.ljqiii.hairlessdockerjudge.dao.ProblemMapper;
 import com.ljqiii.hairlessdockerjudge.dao.SubmitMapper;
 import com.ljqiii.hairlesscommon.domain.amqpdomain.SubmitedProblemItem;
+import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -68,7 +71,13 @@ public class DockerJudgeService {
                 .removeAfterExit(true)
                 .build();
 
-        amqpTemplate.convertAndSend("SubmitedProblemExchange", "SubmitedProblem.problem", submitedProblemItem);
+        amqpTemplate.convertAndSend("SubmitedProblemExchange", "SubmitedProblem.problem", submitedProblemItem, new MessagePostProcessor() {
+            @Override
+            public Message postProcessMessage(Message message) throws AmqpException {
+                message.getMessageProperties().setPriority(1);
+                return message;
+            }
+        });
 
         //发送ws提交成功消息
         simpMessagingTemplate.convertAndSendToUser(username,

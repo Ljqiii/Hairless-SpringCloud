@@ -23,4 +23,5 @@ public class Problem {
     String dockerCacheDir;
     String lang;
     String cmd;
+    String ownerUserName;
 }

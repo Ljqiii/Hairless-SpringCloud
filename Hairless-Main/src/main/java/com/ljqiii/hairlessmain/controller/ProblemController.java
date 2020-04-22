@@ -1,19 +1,22 @@
 package com.ljqiii.hairlessmain.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
+import com.ljqiii.hairlesscommon.domain.Problem;
+import com.ljqiii.hairlesscommon.domain.ProblemTemplate;
 import com.ljqiii.hairlesscommon.enums.ResultEnum;
 import com.ljqiii.hairlesscommon.vo.HairlessResponse;
 import com.ljqiii.hairlesscommon.vo.PageData;
 import com.ljqiii.hairlesscommon.vo.ProblemListVO;
 import com.ljqiii.hairlesscommon.vo.ProblemVO;
+import com.ljqiii.hairlessmain.form.NewProblemForm;
 import com.ljqiii.hairlessmain.service.ProblemService;
+import com.ljqiii.hairlessmain.service.ProblemTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -23,6 +26,9 @@ public class ProblemController {
 
     @Autowired
     ProblemService problemService;
+    @Autowired
+    ProblemTemplateService problemTemplateService;
+
 
     @GetMapping("/problemlist")
     public HairlessResponse<PageData<List<ProblemListVO>>> problemList(
@@ -67,6 +73,46 @@ public class ProblemController {
         response.setCodeMsg(ResultEnum.OK);
         response.setData(problem);
 
+        return response;
+    }
+
+
+    @PostMapping("/newproblem")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_TEACHER')")
+    public HairlessResponse<JSONObject> newProblem(
+            @RequestBody NewProblemForm form,
+            Principal principal) {
+        Problem problem = Problem.builder()
+                .dockerImage(form.getDockerImage())
+                .lang(form.getLang())
+                .cmd(form.getCmd())
+                .description(form.getDescription())
+                .initCode(JSONObject.toJSONString(form.getInitCode()))
+                .complexity(form.getComplexity())
+                .title(form.getTitle())
+                .onlyVip(form.isOnlyVip())
+                .dockerCacheDir(form.getDockerCacheDir())
+                .memoryLimit(form.getMemoryLimit())
+                .ownerUserName(principal.getName())
+                .build();
+
+        Integer problemId = problemService.newProblem(problem);
+
+        HairlessResponse<JSONObject> response = new HairlessResponse<>();
+        JSONObject data = new JSONObject();
+        data.put("problemid", problemId);
+        response.setCodeMsg(ResultEnum.OK);
+        response.setData(data);
+        return response;
+    }
+
+    @GetMapping("/problemtemple")
+    public HairlessResponse<ProblemTemplate> problemList(
+            @RequestParam(value = "lang", required = false, defaultValue = "java1.8/maven") String lang) {
+        ProblemTemplate template = problemTemplateService.getTemplate(lang);
+        HairlessResponse<ProblemTemplate> response = new HairlessResponse<>();
+        response.setCodeMsg(ResultEnum.OK);
+        response.setData(template);
         return response;
     }
 }

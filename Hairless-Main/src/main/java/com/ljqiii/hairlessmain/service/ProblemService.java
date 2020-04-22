@@ -18,4 +18,6 @@ public interface ProblemService {
 
     boolean isVipProblem(int problemid);
 
+    Integer newProblem(Problem problem);
+
 }

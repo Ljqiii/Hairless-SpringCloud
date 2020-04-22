@@ -2,10 +2,7 @@ package com.ljqiii.hairlessmain.dao;
 
 
 import com.ljqiii.hairlesscommon.domain.Problem;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -25,5 +22,10 @@ public interface ProblemMapper {
 
     @Select("select count(*) from favorite where problemid=#{problemid} and username=#{username}")
     int selectCountFavorite(@Param("problemid") int problemid, @Param("username") String username);
+
+    @Insert("insert into problem(dockerImage,lang,cmd,description,initCode,complexity,title,onlyVip,dockerCacheDir,memoryLimit,ownerUserName)values (#{dockerImage},#{lang},#{cmd},#{description},#{initCode},#{complexity},#{title},#{onlyVip},#{dockerCacheDir},#{memoryLimit},#{ownerUserName})")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    int insertProblem(Problem problem);
+
 
 }
