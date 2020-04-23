@@ -23,6 +23,7 @@
         <module>Hairless-AccountService</module>
         <module>Hairless-Main</module>
         <module>Hairless-Forum</module>
+        <module>Hairless-Competition</module>
     </modules>
 
 

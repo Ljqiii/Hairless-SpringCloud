@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljqiii.hairlesscompetition.dao.CompetitionUserMapper">
+
+    <insert id="insertCompetitionUser">
+
+        insert into competition_user(competitionId,username)values
+        <foreach collection="usernames" item="item" separator=",">
+            #{item}
+        </foreach>
+
+    </insert>
+
+
+</mapper>
