@@ -1,5 +1,6 @@
 package com.ljqiii.hairlessdockerjudge.comsumer;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ljqiii.hairlesscommon.constants.JudgeStepConstants;
 import com.ljqiii.hairlesscommon.constants.LangConstants;
@@ -42,21 +43,35 @@ public class UserInfoComsumer {
     //更新最后登录时间，增加登录积分
     @RabbitHandler
     public void process(SubmitedProblemItem submitedProblemItem) {
-        log.info("Mq process SubmitedProblem, submitId:{}", submitedProblemItem.getSubmitId());
-        System.out.println(JSONObject.toJSONString(submitedProblemItem));
+        log.info("MQ processing SubmitedProblem, submitId:{}", submitedProblemItem.getSubmitId());
 
         try {
+            if (!verifySubmitedProblemItem(submitedProblemItem)) {
+                throw new IllegalArgumentException("数据错误");
+            }
+
             //发送ws消息，等待获得虚拟机
             simpMessagingTemplate.convertAndSendToUser(submitedProblemItem.getUsername(),
                     WsDestinationConstants.JudgeLifeCycle,
                     JudgeStepMessage.builder().event(JudgeStepConstants.AssigningDockerVirtualMachine).submitId(submitedProblemItem.getSubmitId()).flag("ok").build());
-            judge(submitedProblemItem);
 
+            judge(submitedProblemItem);
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("Mq process SubmitedProblem faild, SubmitedProblemItem:{}", JSONObject.toJSONString(submitedProblemItem));
+            log.error("MQ process SubmitedProblem faild, SubmitedProblemItem:{}", JSON.toJSONString(submitedProblemItem));
         }
     }
+
+    /**
+     * 验证是否正确
+     *
+     * @param s
+     * @return
+     */
+    boolean verifySubmitedProblemItem(SubmitedProblemItem s) {
+        return true;
+    }
+
 
     public void judge(SubmitedProblemItem s) {
         dockerClientService.execProblemWithContainer(s.getImageName(),
@@ -106,8 +121,7 @@ public class UserInfoComsumer {
      */
     ContainerInterceptor getContainerInterceptor(String lang, String username, int submitId) {
 
-
-        ContainerInterceptor commonContainerInterceptor = new ContainerInterceptor() {
+        return new ContainerInterceptor() {
             @Override
             public void beforeContainerConfigBuild(ContainerConfig.Builder builder) {
 
@@ -153,8 +167,6 @@ public class UserInfoComsumer {
                         payload);
             }
         };
-
-        return commonContainerInterceptor;
 
         //根据不同语言
     }

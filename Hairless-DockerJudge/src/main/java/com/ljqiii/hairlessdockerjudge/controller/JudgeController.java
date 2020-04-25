@@ -4,6 +4,7 @@ package com.ljqiii.hairlessdockerjudge.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.ljqiii.hairlesscommon.constants.RoleConstants;
 import com.ljqiii.hairlesscommon.domain.ProblemCode;
+import com.ljqiii.hairlesscommon.enums.JudgePriorityEnum;
 import com.ljqiii.hairlesscommon.enums.ResultEnum;
 import com.ljqiii.hairlesscommon.vo.HairlessResponse;
 import com.ljqiii.hairlessdockerjudge.form.ProblemSubmitForm;
@@ -47,7 +48,8 @@ public class JudgeController {
 
         int submitId = dockerJudgeService.submitCode(principal.getName(),
                 problemSubmitForm.getProblemId(),
-                problemSubmitForm.getProblemCode());
+                problemSubmitForm.getProblemCode(),
+                authorithies.contains(RoleConstants.Vip) ? JudgePriorityEnum.VIP : JudgePriorityEnum.NORMAL);//有vip权限高优先级
 
         response.setCodeMsg(ResultEnum.OK);
         JSONObject responseData = new JSONObject();

@@ -7,6 +7,7 @@ import com.ljqiii.hairlesscommon.constants.WsDestinationConstants;
 import com.ljqiii.hairlesscommon.domain.Problem;
 import com.ljqiii.hairlesscommon.domain.ProblemCode;
 import com.ljqiii.hairlesscommon.domain.Submit;
+import com.ljqiii.hairlesscommon.enums.JudgePriorityEnum;
 import com.ljqiii.hairlesscommon.vo.wsvo.JudgeStepMessage;
 import com.ljqiii.hairlessdockerjudge.dao.ProblemMapper;
 import com.ljqiii.hairlessdockerjudge.dao.SubmitMapper;
@@ -18,6 +19,8 @@ import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+
+import static com.ljqiii.hairlessdockerjudge.utils.ProblemCodeUtil.verifyProblemCode;
 
 @Service
 public class DockerJudgeService {
@@ -46,10 +49,11 @@ public class DockerJudgeService {
      * @param problemId
      * @param problemCode
      */
-    public int submitCode(String username, int problemId, ProblemCode problemCode) {
-        if (verifyProblemCode(problemId, problemCode) == false) {
+    public int submitCode(String username, int problemId, ProblemCode problemCode, JudgePriorityEnum priorityEnum) {
+        if (!verifyProblemCode(problemId, problemCode)) {
             throw new IllegalArgumentException("代码非法");
         }
+
         Problem problem = problemMapper.selectProblemById(problemId);
 
         Submit submit = Submit.builder()
@@ -74,7 +78,7 @@ public class DockerJudgeService {
         amqpTemplate.convertAndSend("SubmitedProblemExchange", "SubmitedProblem.problem", submitedProblemItem, new MessagePostProcessor() {
             @Override
             public Message postProcessMessage(Message message) throws AmqpException {
-                message.getMessageProperties().setPriority(1);
+                message.getMessageProperties().setPriority(priorityEnum.getPriority());
                 return message;
             }
         });
@@ -97,18 +101,5 @@ public class DockerJudgeService {
         boolean result = problemMapper.selectIfOnlyVipByProblemId(problemid);
         return result;
     }
-
-
-    /**
-     * 检查代码合法
-     *
-     * @param problemid
-     * @param problemCode
-     * @return
-     */
-    public boolean verifyProblemCode(int problemid, ProblemCode problemCode) {
-        return true;
-    }
-
 
 }

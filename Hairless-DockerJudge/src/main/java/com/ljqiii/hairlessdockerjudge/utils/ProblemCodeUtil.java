@@ -10,6 +10,9 @@ import java.util.TreeSet;
 public class ProblemCodeUtil {
 
 
+    private ProblemCodeUtil() {
+    }
+
     /**
      * 根据ProblemCode生成Tar的InputStream
      *
@@ -67,6 +70,17 @@ public class ProblemCodeUtil {
                 addStringFileRecursive(problemCodeFileItem.getChildren(), builder, codePath);
             }
         }
+    }
+
+    /**
+     * 检查代码合法
+     *
+     * @param problemid
+     * @param problemCode
+     * @return
+     */
+    public static boolean verifyProblemCode(int problemid, ProblemCode problemCode) {
+        return true;
     }
 
 
