@@ -28,16 +28,14 @@ public class CompetitionController {
 
     @GetMapping("/competitions")
     public HairlessResponse<PageData<List<CompetitionVO>>> competitions(Principal principal,
-                                                                        @RequestParam(value = "mineOnly", required = false, defaultValue = "false") Boolean mineOnly,
+                                                                        @RequestParam(value = "owner", required = false, defaultValue = "") String owner,
                                                                         @RequestParam(value = "competitionId", required = false, defaultValue = "") Integer competitionId,
                                                                         @RequestParam(value = "pagenum", required = false, defaultValue = "1") int pageNum,
                                                                         @RequestParam(value = "pagecount", required = false, defaultValue = "20") int pageCount) {
-        List<String> roles = principal != null ? ((OAuth2Authentication) principal).getUserAuthentication().getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.toList()) : new ArrayList<>();
-
         HairlessResponse<PageData<List<CompetitionVO>>> response = new HairlessResponse<>();
         PageData<List<CompetitionVO>> listPageData = competitionService.listCompetition(
                 competitionId,
-                (mineOnly && !roles.contains(RoleConstants.Admin)) ? (principal != null ? principal.getName() : null) : null,
+                owner,
                 principal != null ? principal.getName() : null,
                 false, pageNum, pageCount);
 

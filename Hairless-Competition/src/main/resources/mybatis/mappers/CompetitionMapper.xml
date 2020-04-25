@@ -33,7 +33,7 @@
         <if test="competitionId != null">
             and competition.id=#{competitionId}
         </if>
-        <if test="createUserName != null">
+        <if test="createUserName != null and createUserName != ''">
             and createUsername=#{createUserName}
         </if>
         <if test="includeDel != null and includeDel !=true ">
