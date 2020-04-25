@@ -15,7 +15,9 @@ public enum ResultEnum {
     PROBLEM_DONOT_EXIST(1002, "问题不存在"),
     VIPPROBLEM_UNLOGIN(1003, "Vip题目需要登录后才能查看"),
     FAVORITE_FOLDER_EXIST(1004, "问题不存在"),
-    VIPBILLID_DONOT_EXIST(1005, "vip订单号不存在");
+    VIPBILLID_DONOT_EXIST(1005, "vip订单号不存在"),
+    PASSEORD_NOT_SAME(1006, "密码不一致"),
+    CHANGE_PASSEORD_OK(1007, "修改密码成功");
 
     private Integer code;
     private String message;
