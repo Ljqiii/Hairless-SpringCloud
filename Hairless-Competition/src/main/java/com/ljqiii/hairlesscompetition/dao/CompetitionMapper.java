@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface CompetitionMapper {
 
-    @Insert("insert into competition(title,createUserame,startTime,endTime,isPublic,description,isDel)values (#{title},#{createUserame},#{startTime},#{endTime},#{isPublic},#{description},#{isDel})")
+    @Insert("insert into competition(title,createUserame,startTime,endTime,isPublic,description,encodedPassword,isDel)values (#{title},#{createUserame},#{startTime},#{endTime},#{isPublic},#{description},#{encodedPassword},#{isDel})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insertCompetition(Competition competition);
 

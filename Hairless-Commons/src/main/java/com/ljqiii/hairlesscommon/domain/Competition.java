@@ -20,4 +20,5 @@ public class Competition {
     Boolean isPublic;
     String description;
     boolean isDel;
+    String encodedPassword;
 }
