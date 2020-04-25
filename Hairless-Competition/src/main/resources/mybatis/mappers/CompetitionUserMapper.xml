@@ -8,7 +8,7 @@
 
         insert into competition_user(competitionId,username)values
         <foreach collection="usernames" item="item" separator=",">
-            #{item}
+            (#{competition.id}, #{item})
         </foreach>
 
     </insert>

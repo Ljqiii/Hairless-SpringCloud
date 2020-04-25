@@ -42,7 +42,7 @@ public class PostController {
 
     @PostMapping("/deletepost")
     @PreAuthorize("hasRole('ROLE_NORMALUSER')")
-    HairlessResponse<Void> pushPost(Principal principal,
+    HairlessResponse<Void> deletePost(Principal principal,
                                     DeletePostForm deletePostForm) {
         boolean forcedel = false;
         if (principal instanceof OAuth2Authentication && ((OAuth2Authentication) principal).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
@@ -62,7 +62,7 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    HairlessResponse<PageData<List<PostVO>>> pushPost(Principal principal,
+    HairlessResponse<PageData<List<PostVO>>> posts(Principal principal,
                                                       @RequestParam(value = "postId", required = false, defaultValue = "") Integer postId,
                                                       @RequestParam(value = "posttopicid", required = false, defaultValue = "") Integer postTopicId,
                                                       @RequestParam(value = "pagenum", required = false, defaultValue = "1") int pageNum,

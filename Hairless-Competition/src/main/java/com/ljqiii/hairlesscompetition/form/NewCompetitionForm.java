@@ -1,17 +1,12 @@
-package com.ljqiii.hairlesscommon.domain;
+package com.ljqiii.hairlesscompetition.form;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class Competition {
+public class NewCompetitionForm {
+
     int id;
     String title;
     String createUsername;

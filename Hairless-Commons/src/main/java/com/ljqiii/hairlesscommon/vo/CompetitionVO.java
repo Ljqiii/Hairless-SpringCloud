@@ -14,9 +14,11 @@ import java.util.Date;
 public class CompetitionVO {
     int id;
     String title;
-    String createUserame;
+    String createUserNickName;
     String startTime;
     String endTime;
     Boolean isPublic;
     String description;
+    boolean isUserJoined;//是否已经参加
+    String status;//unstart, processing, end
 }

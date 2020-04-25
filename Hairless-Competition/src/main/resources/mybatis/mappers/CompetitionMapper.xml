@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljqiii.hairlesscompetition.dao.CompetitionMapper">
+
+
+    <select id="selectCompetitionVO" resultType="com.ljqiii.hairlesscommon.vo.CompetitionVO">
+
+        select
+        competition.id id ,
+        competition.title title ,
+        user.nickname createUserNickName ,
+        date_format(competition.startTime, '%Y-%m-%d %h:%i') startTime,
+        date_format(competition.endTime, '%Y-%m-%d %h:%i') endTime,
+
+        competition.isPublic isPublic ,
+        competition.description description,
+
+        <if test="usernameIfJoin != null">
+            if(competition_user.username is not null ,true ,false ) isUserJoined,
+        </if>
+
+        if(now() between competition.startTime and competition.endTime,'processing',if(now() >
+        competition.endTime,'end','unstart')) status
+
+        from competition
+        left join user on competition.createUsername=user.username
+        <if test="usernameIfJoin != null">
+            left join competition_user on competition.id = competition_user.competitionId
+        </if>
+        where 1
+        <if test="competitionId != null">
+            and competition.id=#{competitionId}
+        </if>
+        <if test="createUserName != null">
+            and createUsername=#{createUserName}
+        </if>
+        <if test="includeDel != null and includeDel !=true ">
+            and competition.isDel=false
+        </if>
+
+    </select>
+</mapper>
