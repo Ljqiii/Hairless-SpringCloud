@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface ProblemMapper {
 
-    List<Problem> selectProblem(@Param("category") String category);
+    List<Problem> selectProblem(@Param("category") String category, @Param("owner") String owner);
 
     @Select("select * from problem where id=#{id} limit 1")
     Problem selectProblemById(@Param("id") int id);

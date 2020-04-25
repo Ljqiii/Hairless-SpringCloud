@@ -52,7 +52,7 @@ public class MapperTest {
 
     @Test
     public void selectProblem() {
-        List<Problem> problems = problemMapper.selectProblem(null);
+        List<Problem> problems = problemMapper.selectProblem(null, null);
         Assert.assertNull(problems);
     }
 
@@ -64,7 +64,7 @@ public class MapperTest {
 
     @Test
     public void selectProblemWirhCategory() {
-        List<Problem> problems = problemMapper.selectProblem("thread");
+        List<Problem> problems = problemMapper.selectProblem("thread", null);
         Assert.assertNull(problems);
     }
 

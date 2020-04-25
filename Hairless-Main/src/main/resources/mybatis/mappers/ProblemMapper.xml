@@ -9,11 +9,18 @@
         select * from problem
         <if test="category!=null and category!=''">
             ,category, problem_category
+        </if>
+        WHERE 1
+        <if test="category!=null and category!=''">
             WHERE category.symbol = #{category}
             and problem_category.categoryid = category.id
             and problem_category.problemid = problem.id
-            order by problem.id
         </if>
+        <if test="owner != null and owner != ''">
+            and problem.ownerUserName=#{owner}
+        </if>
+        order by problem.id
+
     </select>
 
 

@@ -33,13 +33,14 @@ public class ProblemController {
     @GetMapping("/problemlist")
     public HairlessResponse<PageData<List<ProblemListVO>>> problemList(
             @RequestParam(value = "category", required = false, defaultValue = "") String category,
+            @RequestParam(value = "owner", required = false, defaultValue = "") String owner,
             @RequestParam(value = "pagenum", required = false, defaultValue = "1") int pageNum,
             @RequestParam(value = "pagecount", required = false, defaultValue = "20") int pageCount,
             Principal principal) {
 
         String usename = principal == null ? null : principal.getName();
 
-        PageData<List<ProblemListVO>> problemListVOS = problemService.listProblem(usename, category.equals("all") ? null : category, pageNum, pageCount);
+        PageData<List<ProblemListVO>> problemListVOS = problemService.listProblem(owner,usename, category.equals("all") ? null : category, pageNum, pageCount);
         HairlessResponse<PageData<List<ProblemListVO>>> response = new HairlessResponse<>();
         response.setCodeMsg(ResultEnum.OK);
         response.setData(problemListVOS);

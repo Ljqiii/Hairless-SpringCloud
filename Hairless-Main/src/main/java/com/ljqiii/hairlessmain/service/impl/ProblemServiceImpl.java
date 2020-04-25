@@ -107,10 +107,10 @@ public class ProblemServiceImpl implements ProblemService {
     }
 
     @Override
-    public PageData<List<ProblemListVO>> listProblem(String username, String category, int pageNum, int pageCount) {
+    public PageData<List<ProblemListVO>> listProblem(String owner, String username, String category, int pageNum, int pageCount) {
 
         Page<Problem> problems = PageHelper.startPage(pageNum, pageCount)
-                .doSelectPage(() -> problemMapper.selectProblem(category));
+                .doSelectPage(() -> problemMapper.selectProblem(category,owner));
 
         return setProblemVOData(username, problems);
     }

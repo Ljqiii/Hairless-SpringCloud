@@ -12,7 +12,7 @@ public interface ProblemService {
 
     PageData<List<ProblemListVO>> setProblemVOData(String username, Page<Problem> problems);
 
-    PageData<List<ProblemListVO>> listProblem(String username, String category, int pageNum, int pageCount);
+    PageData<List<ProblemListVO>> listProblem( String owner,String username, String category, int pageNum, int pageCount);
 
     ProblemVO getProblem(String username, int problemid);
 
