@@ -38,10 +38,10 @@ public class PostService {
      * @param pageCount
      * @return
      */
-    public PageData<List<PostVO>> listPost(boolean selectDeleted, Integer postId, Integer postTopicId, int pageNum, int pageCount) {
+    public PageData<List<PostVO>> listPost(boolean selectDeleted, Integer postId, Integer postTopicId, String username, int pageNum, int pageCount) {
         PageData<List<PostVO>> pageData = new PageData<>();
         Page<PostVO> postVOs = PageHelper.startPage(pageNum, pageCount)
-                .doSelectPage(() -> postMapper.selectPost(selectDeleted, postId, postTopicId));
+                .doSelectPage(() -> postMapper.selectPost(selectDeleted, postId, postTopicId,username));
         pageData.setContent(postVOs.getResult());
 
         pageData.setPageInfo(PageInfo.builder()

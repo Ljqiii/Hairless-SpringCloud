@@ -15,7 +15,7 @@ public interface PostMapper {
 
     int softDeletePost(@Param("forcedel") boolean forcedel, @Param("postid") int postid, @Param("username") String username);
 
-    List<PostVO> selectPost(@Param("selectDeleted") boolean selectDeleted, @Param("postid") Integer postid, @Param("posttopicid") Integer posttopicid);
+    List<PostVO> selectPost(@Param("selectDeleted") boolean selectDeleted, @Param("postid") Integer postid, @Param("posttopicid") Integer posttopicid, @Param("username") String username);
 
 
 }

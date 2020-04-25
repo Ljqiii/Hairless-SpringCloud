@@ -31,7 +31,7 @@ class PostMapperTest {
 
     @Test
     void selectPost() {
-        List<PostVO> postVOS = postMapper.selectPost(false,1,1);
+        List<PostVO> postVOS = postMapper.selectPost(false, 1, 1, null);
         Assert.assertNotNull(postVOS);
     }
 }

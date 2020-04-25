@@ -43,13 +43,12 @@ public class PostController {
     @PostMapping("/deletepost")
     @PreAuthorize("hasRole('ROLE_NORMALUSER')")
     HairlessResponse<Void> deletePost(Principal principal,
-                                    DeletePostForm deletePostForm) {
+                                      @RequestBody DeletePostForm deletePostForm) {
         boolean forcedel = false;
         if (principal instanceof OAuth2Authentication && ((OAuth2Authentication) principal).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
             forcedel = true;
-
         }
-        boolean result = postService.deletePost(forcedel, deletePostForm.getPostId(), principal.getName());
+        boolean result = postService.deletePost(forcedel, deletePostForm.getPostid(), principal.getName());
 
         HairlessResponse<Void> response = new HairlessResponse<>();
 
@@ -63,18 +62,19 @@ public class PostController {
 
     @GetMapping("/posts")
     HairlessResponse<PageData<List<PostVO>>> posts(Principal principal,
-                                                      @RequestParam(value = "postId", required = false, defaultValue = "") Integer postId,
-                                                      @RequestParam(value = "posttopicid", required = false, defaultValue = "") Integer postTopicId,
-                                                      @RequestParam(value = "pagenum", required = false, defaultValue = "1") int pageNum,
-                                                      @RequestParam(value = "pagecount", required = false, defaultValue = "20") int pageCount) {
+                                                   @RequestParam(value = "username", required = false, defaultValue = "") String username,
+                                                   @RequestParam(value = "postId", required = false, defaultValue = "") Integer postId,
+                                                   @RequestParam(value = "posttopicid", required = false, defaultValue = "") Integer postTopicId,
+                                                   @RequestParam(value = "pagenum", required = false, defaultValue = "1") int pageNum,
+                                                   @RequestParam(value = "pagecount", required = false, defaultValue = "20") int pageCount) {
 
 
         boolean selecetDeleted = false;
-        if (principal != null && ((OAuth2Authentication) principal).getUserAuthentication().getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.toList()).contains(RoleConstants.Admin)) {
-            selecetDeleted = true;
-        }
+//        if (principal != null && ((OAuth2Authentication) principal).getUserAuthentication().getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.toList()).contains(RoleConstants.Admin)) {
+//            selecetDeleted = true;
+//        }
         HairlessResponse<PageData<List<PostVO>>> response = new HairlessResponse<>();
-        PageData<List<PostVO>> listPageData = postService.listPost(selecetDeleted, postId, postTopicId, pageNum, pageCount);
+        PageData<List<PostVO>> listPageData = postService.listPost(selecetDeleted, postId, postTopicId, username, pageNum, pageCount);
 
         response.setCodeMsg(ResultEnum.OK);
         response.setData(listPageData);

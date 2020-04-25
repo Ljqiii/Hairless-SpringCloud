@@ -6,5 +6,5 @@ import java.util.List;
 
 @Data
 public class DeletePostForm {
-    Integer postId;
+    Integer postid;
 }

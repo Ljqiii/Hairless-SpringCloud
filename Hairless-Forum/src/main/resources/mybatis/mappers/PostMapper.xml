@@ -45,6 +45,9 @@
         <if test="!selectDeleted">
             and post.isdel = false
         </if>
+        <if test="username != null and username != ''">
+            and post.username=#{username}
+        </if>
         <if test="posttopicid!=null">
             and post_topic.topicid=#{posttopicid}
         </if>
