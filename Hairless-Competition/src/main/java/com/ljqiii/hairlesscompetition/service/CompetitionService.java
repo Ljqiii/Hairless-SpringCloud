@@ -1,13 +1,13 @@
 package com.ljqiii.hairlesscompetition.service;
 
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.page.PageMethod;
 import com.ljqiii.hairlesscommon.domain.Competition;
 import com.ljqiii.hairlesscommon.vo.CompetitionVO;
 import com.ljqiii.hairlesscommon.vo.PageData;
 import com.ljqiii.hairlesscommon.vo.PageInfo;
 import com.ljqiii.hairlesscompetition.dao.CompetitionMapper;
+import com.ljqiii.hairlesscompetition.dao.CompetitionProblemMapper;
 import com.ljqiii.hairlesscompetition.dao.CompetitionUserMapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +30,9 @@ public class CompetitionService {
     @Autowired
     CompetitionUserMapper competitionUserMapper;
 
+    @Autowired
+    CompetitionProblemMapper competitionProblemMapper;
+
 
     public PageData<List<CompetitionVO>> listCompetition(Integer competitionId, String createUserName, String usernameIfJoin, Boolean includeDel, int pageNum, int pageCount) {
         PageData<List<CompetitionVO>> pageData = new PageData<>();
@@ -45,6 +48,22 @@ public class CompetitionService {
     }
 
     @Transactional
+    public int newCompetition(String title, String description, String createUserName, boolean isPublic,
+                              String password, Date startTime, Date endTime, List<Integer> problemIds) {
+        Competition competition = Competition.builder().title(title)
+                .description(description).isPublic(isPublic)
+                .encodedPassword(passwordEncoder.encode(password))
+                .startTime(startTime)
+                .endTime(endTime)
+                .createUsername(createUserName)
+                .isDel(false)
+                .build();
+        competitionMapper.insertCompetition(competition);
+        competitionProblemMapper.insertCompetitionProblem(competition, problemIds);
+        return competition.getId();
+    }
+
+    @Transactional
     public void joinCompetition(List<String> usernames, Integer competitionId, String password) {
         Competition competition = competitionMapper.selecetCompetitionById(competitionId);
 
@@ -53,10 +72,8 @@ public class CompetitionService {
             throw new IllegalArgumentException("竞赛已开始，禁止加入");
         }
 
-        if (!competition.getIsPublic()) {
-            if (!verifyCompetitionPassword(competitionId, password)) {
-                throw new IllegalArgumentException("竞赛密码错误");
-            }
+        if ((!competition.getIsPublic()) && (!verifyCompetitionPassword(competitionId, password))) {
+            throw new IllegalArgumentException("竞赛密码错误");
         }
         competitionUserMapper.insertCompetitionUser(competition, usernames);
     }

@@ -3,16 +3,15 @@ package com.ljqiii.hairlesscompetition.form;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class NewCompetitionForm {
-
-    int id;
     String title;
-    String createUsername;
     Date startTime;
     Date endTime;
     Boolean isPublic;
+    String password;
     String description;
-    boolean isDel;
+    List<Integer> problemIds;
 }

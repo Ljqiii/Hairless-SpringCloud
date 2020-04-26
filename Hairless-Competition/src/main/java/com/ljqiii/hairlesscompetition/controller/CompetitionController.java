@@ -1,7 +1,6 @@
 package com.ljqiii.hairlesscompetition.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.ljqiii.hairlesscommon.constants.RoleConstants;
 import com.ljqiii.hairlesscommon.enums.ResultEnum;
 import com.ljqiii.hairlesscommon.vo.CompetitionVO;
 import com.ljqiii.hairlesscommon.vo.HairlessResponse;
@@ -11,14 +10,11 @@ import com.ljqiii.hairlesscompetition.form.NewCompetitionForm;
 import com.ljqiii.hairlesscompetition.service.CompetitionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class CompetitionController {
@@ -71,8 +67,15 @@ public class CompetitionController {
 
         HairlessResponse<JSONObject> response = new HairlessResponse<>();
         JSONObject responsejson = new JSONObject();
-
-        responsejson.put("competitionid", null);
+        int competitionId = competitionService.newCompetition(newCompetitionForm.getTitle(),
+                newCompetitionForm.getDescription(),
+                principal.getName(),
+                newCompetitionForm.getIsPublic(),
+                newCompetitionForm.getPassword(),
+                newCompetitionForm.getStartTime(),
+                newCompetitionForm.getEndTime(),
+                newCompetitionForm.getProblemIds());
+        responsejson.put("competitionid", competitionId);
         response.setData(responsejson);
         response.setCodeMsg(ResultEnum.OK);
         return response;

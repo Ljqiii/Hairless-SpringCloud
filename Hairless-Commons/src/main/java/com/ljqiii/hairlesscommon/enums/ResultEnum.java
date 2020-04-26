@@ -17,7 +17,8 @@ public enum ResultEnum {
     FAVORITE_FOLDER_EXIST(1004, "问题不存在"),
     VIPBILLID_DONOT_EXIST(1005, "vip订单号不存在"),
     PASSEORD_NOT_SAME(1006, "密码不一致"),
-    CHANGE_PASSEORD_OK(1007, "修改密码成功");
+    CHANGE_PASSEORD_OK(1007, "修改密码成功"),
+    PEOBLEM_ID_INVALID(1006, "题目编号必须为数字");
 
     private Integer code;
     private String message;

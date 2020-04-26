@@ -1,6 +1,7 @@
 package com.ljqiii.hairlessmain.controller;
 
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ljqiii.hairlesscommon.domain.Problem;
 import com.ljqiii.hairlesscommon.domain.ProblemTemplate;
@@ -40,10 +41,32 @@ public class ProblemController {
 
         String usename = principal == null ? null : principal.getName();
 
-        PageData<List<ProblemListVO>> problemListVOS = problemService.listProblem(owner,usename, category.equals("all") ? null : category, pageNum, pageCount);
+        PageData<List<ProblemListVO>> problemListVOS = problemService.listProblem(owner, usename, category.equals("all") ? null : category, pageNum, pageCount);
         HairlessResponse<PageData<List<ProblemListVO>>> response = new HairlessResponse<>();
         response.setCodeMsg(ResultEnum.OK);
         response.setData(problemListVOS);
+        return response;
+    }
+
+    @GetMapping("/problemtitle/{problemid}")
+    public HairlessResponse<JSONObject> probelmTitle(@PathVariable(value = "problemid") String problemid) {
+        HairlessResponse<JSONObject> response = new HairlessResponse<>();
+        try {
+            Integer.valueOf(problemid);
+        } catch (Exception e) {
+            response.setCodeMsg(ResultEnum.PEOBLEM_ID_INVALID);
+            return response;
+        }
+        ProblemVO problem = problemService.getProblem(null, Integer.valueOf(problemid));
+        JSONObject jsonObject = new JSONObject();
+        if (problem == null) {
+            response.setCodeMsg(ResultEnum.PROBLEM_DONOT_EXIST);
+        } else {
+            response.setCodeMsg(ResultEnum.OK);
+            jsonObject.put("id", problem.getId());
+            jsonObject.put("title", problem.getTitle());
+            response.setData(jsonObject);
+        }
         return response;
     }
 
@@ -62,7 +85,7 @@ public class ProblemController {
         if (vipProblem && principal == null) {
             response.setCodeMsg(ResultEnum.VIPPROBLEM_UNLOGIN);
             return response;
-        } else if (vipProblem && (isVip == false)) {
+        } else if (vipProblem && (!isVip)) {
             response.setCodeMsg(ResultEnum.VIP_ONLY);
             return response;
         }
@@ -88,7 +111,7 @@ public class ProblemController {
                 .lang(form.getLang())
                 .cmd(form.getCmd())
                 .description(form.getDescription())
-                .initCode(JSONObject.toJSONString(form.getInitCode()))
+                .initCode(JSON.toJSONString(form.getInitCode()))
                 .complexity(form.getComplexity())
                 .title(form.getTitle())
                 .onlyVip(form.isOnlyVip())

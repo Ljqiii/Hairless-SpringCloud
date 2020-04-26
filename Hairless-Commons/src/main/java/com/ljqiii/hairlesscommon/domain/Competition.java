@@ -12,7 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class Competition {
-    int id;
+    Integer id;
     String title;
     String createUsername;
     Date startTime;
