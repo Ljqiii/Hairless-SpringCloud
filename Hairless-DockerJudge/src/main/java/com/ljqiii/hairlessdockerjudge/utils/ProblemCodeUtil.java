@@ -59,8 +59,9 @@ public class ProblemCodeUtil {
 
 
         for (ProblemCode.ProblemCodeFileItem problemCodeFileItem : problemCodeFileItems) {
-            String filename = problemCodeFileItem.getPath() + "/" + problemCodeFileItem.getFilename();
-            if (problemCodeFileItem.getType().equals("folder")) {
+            String filename = problemCodeFileItem.getPath() + (problemCodeFileItem.getPath().endsWith("/") ? "" : "/") + problemCodeFileItem.getFilename();
+
+            if (problemCodeFileItem.getType().equals("folder") && (!filename.endsWith("/"))) {
                 filename += "/";
             }
             String content = problemCodeFileItem.getContent();
