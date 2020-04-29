@@ -1,6 +1,7 @@
 package com.ljqiii.hairlessmain.dao;
 
 import com.ljqiii.hairlesscommon.domain.Category;
+import com.ljqiii.hairlesscommon.domain.Problem;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -20,4 +21,5 @@ public interface CategoryMapper {
     @Select("select name from category where symbol=#{symbol}")
     String selectCategoryNameBySymbol(@Param("symbol") String symbol);
 
+    int insertProblemCategory(@Param("problem") Problem problem, @Param("categories")  List<Category> categories);
 }

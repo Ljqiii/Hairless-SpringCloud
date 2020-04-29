@@ -1,6 +1,7 @@
 package com.ljqiii.hairlessmain.service;
 
 import com.github.pagehelper.Page;
+import com.ljqiii.hairlesscommon.domain.Category;
 import com.ljqiii.hairlesscommon.domain.Problem;
 import com.ljqiii.hairlesscommon.vo.PageData;
 import com.ljqiii.hairlesscommon.vo.ProblemListVO;
@@ -18,6 +19,6 @@ public interface ProblemService {
 
     boolean isVipProblem(int problemid);
 
-    Integer newProblem(Problem problem);
+    Integer newProblem(Problem problem,List<Category> categories );
 
 }

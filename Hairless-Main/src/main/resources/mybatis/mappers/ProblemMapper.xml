@@ -12,7 +12,7 @@
         </if>
         WHERE 1
         <if test="category!=null and category!=''">
-            WHERE category.symbol = #{category}
+            and category.symbol = #{category}
             and problem_category.categoryid = category.id
             and problem_category.problemid = problem.id
         </if>

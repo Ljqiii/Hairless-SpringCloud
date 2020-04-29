@@ -3,22 +3,21 @@ package com.ljqiii.hairlessmain.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.ljqiii.hairlesscommon.domain.Category;
 import com.ljqiii.hairlesscommon.domain.Problem;
 import com.ljqiii.hairlesscommon.domain.ProblemCode;
 import com.ljqiii.hairlesscommon.vo.PageData;
 import com.ljqiii.hairlesscommon.vo.PageInfo;
 import com.ljqiii.hairlesscommon.vo.ProblemListVO;
 import com.ljqiii.hairlesscommon.vo.ProblemVO;
-import com.ljqiii.hairlessmain.dao.DiscussMapper;
-import com.ljqiii.hairlessmain.dao.FavoriteMapper;
-import com.ljqiii.hairlessmain.dao.ProblemMapper;
-import com.ljqiii.hairlessmain.dao.SubmitMapper;
+import com.ljqiii.hairlessmain.dao.*;
 import com.ljqiii.hairlessmain.dataobject.ProblemAcceptance;
 import com.ljqiii.hairlessmain.service.ProblemService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -37,6 +36,9 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Autowired
     FavoriteMapper favoriteMapper;
+
+    @Autowired
+    CategoryMapper categoryMapper;
 
     public PageData<List<ProblemListVO>> setProblemVOData(String username, Page<Problem> problems) {
         PageData<List<ProblemListVO>> pageData = new PageData<>();
@@ -110,7 +112,7 @@ public class ProblemServiceImpl implements ProblemService {
     public PageData<List<ProblemListVO>> listProblem(String owner, String username, String category, int pageNum, int pageCount) {
 
         Page<Problem> problems = PageHelper.startPage(pageNum, pageCount)
-                .doSelectPage(() -> problemMapper.selectProblem(category,owner));
+                .doSelectPage(() -> problemMapper.selectProblem(category, owner));
 
         return setProblemVOData(username, problems);
     }
@@ -161,9 +163,16 @@ public class ProblemServiceImpl implements ProblemService {
         return problemMapper.selectIfOnlyVipByProblemId(problemid);
     }
 
+    @Transactional
     @Override
-    public Integer newProblem(Problem problem) {
+    public Integer newProblem(Problem problem, List<Category> categories) {
         int i = problemMapper.insertProblem(problem);
+        //验证categoryid是否存在
+
+        if (categories.size() != 0) {
+            categoryMapper.insertProblemCategory(problem, categories);
+        }
+
         if (i == 1) {
             return problem.getId();
         }

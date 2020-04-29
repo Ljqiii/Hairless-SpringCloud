@@ -3,6 +3,7 @@ package com.ljqiii.hairlessmain.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.ljqiii.hairlesscommon.domain.Category;
 import com.ljqiii.hairlesscommon.domain.Problem;
 import com.ljqiii.hairlesscommon.domain.ProblemTemplate;
 import com.ljqiii.hairlesscommon.enums.ResultEnum;
@@ -20,6 +21,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -106,6 +108,10 @@ public class ProblemController {
     public HairlessResponse<JSONObject> newProblem(
             @RequestBody NewProblemForm form,
             Principal principal) {
+
+        List<Category> categories = new ArrayList<>();
+        form.getCategoryids().stream().forEach(item -> categories.add(new Category(item, null, null)));
+
         Problem problem = Problem.builder()
                 .dockerImage(form.getDockerImage())
                 .lang(form.getLang())
@@ -120,7 +126,7 @@ public class ProblemController {
                 .ownerUserName(principal.getName())
                 .build();
 
-        Integer problemId = problemService.newProblem(problem);
+        Integer problemId = problemService.newProblem(problem, categories);
 
         HairlessResponse<JSONObject> response = new HairlessResponse<>();
         JSONObject data = new JSONObject();
