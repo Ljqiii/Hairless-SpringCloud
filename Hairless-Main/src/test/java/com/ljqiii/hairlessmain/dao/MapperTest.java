@@ -12,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -73,7 +76,7 @@ public class MapperTest {
         ArrayList<Problem> problems = new ArrayList<>();
         problems.add(Problem.builder().id(1).build());
         problems.add(Problem.builder().id(2).build());
-        List<Map<Long, Long>> maps = discussMapper.batchSelectCountDiscuss(problems);
+        List<Map<String, Long>> maps = discussMapper.batchSelectCountDiscuss(problems);
         Assert.assertNotNull(maps);
     }
 
@@ -119,7 +122,7 @@ public class MapperTest {
     @Test
     public void selectProblemById() {
         Problem problem = problemMapper.selectProblemById(2);
-        int a1=1;
+        int a1 = 1;
     }
 
     @Test

@@ -4,8 +4,6 @@ import com.ljqiii.hairlesscommon.domain.Discuss;
 import com.ljqiii.hairlesscommon.domain.Problem;
 import org.apache.ibatis.annotations.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +11,7 @@ import java.util.Map;
 public interface DiscussMapper {
 
 
-    List<Map<Long, Long>> batchSelectCountDiscuss(@Param("problems") List<Problem> problems);
+    List<Map<String, Long>> batchSelectCountDiscuss(@Param("problems") List<Problem> problems);
 
     @Select("select count(*) from discuss where problemid=#{problemid}")
     long selectCountDiscuss(@Param("problemid") int problemid);

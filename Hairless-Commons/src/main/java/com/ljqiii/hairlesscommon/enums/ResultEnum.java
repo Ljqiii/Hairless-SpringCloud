@@ -18,7 +18,8 @@ public enum ResultEnum {
     VIPBILLID_DONOT_EXIST(1005, "vip订单号不存在"),
     PASSEORD_NOT_SAME(1006, "密码不一致"),
     CHANGE_PASSEORD_OK(1007, "修改密码成功"),
-    PEOBLEM_ID_INVALID(1006, "题目编号必须为数字");
+    PEOBLEM_ID_INVALID(1008, "题目编号必须为数字"),
+    UNJOIN_COMPETITION(1009, "未加入竞赛");
 
     private Integer code;
     private String message;

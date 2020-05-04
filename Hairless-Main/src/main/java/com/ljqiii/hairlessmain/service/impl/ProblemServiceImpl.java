@@ -1,8 +1,8 @@
 package com.ljqiii.hairlessmain.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.page.PageMethod;
 import com.ljqiii.hairlesscommon.domain.Category;
 import com.ljqiii.hairlesscommon.domain.Problem;
 import com.ljqiii.hairlesscommon.domain.ProblemCode;
@@ -13,15 +13,20 @@ import com.ljqiii.hairlesscommon.vo.ProblemVO;
 import com.ljqiii.hairlessmain.dao.*;
 import com.ljqiii.hairlessmain.dataobject.ProblemAcceptance;
 import com.ljqiii.hairlessmain.service.ProblemService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class ProblemServiceImpl implements ProblemService {
 
@@ -40,6 +45,17 @@ public class ProblemServiceImpl implements ProblemService {
     @Autowired
     CategoryMapper categoryMapper;
 
+    public PageData<List<ProblemListVO>> getProblemByProblemIds(List<Integer> problemids, String username, int pageNum, int pageCount) {
+        if (problemids.isEmpty()) {
+            return new PageData<>();
+        } else {
+            Page<Problem> problems = PageMethod.startPage(pageNum, pageCount)
+                    .doSelectPage(() -> problemMapper.selectProblemByProblemIds(problemids));
+            return setProblemVOData(username, problems);
+        }
+    }
+
+
     public PageData<List<ProblemListVO>> setProblemVOData(String username, Page<Problem> problems) {
         PageData<List<ProblemListVO>> pageData = new PageData<>();
 
@@ -54,11 +70,11 @@ public class ProblemServiceImpl implements ProblemService {
 
         HashMap<Integer, String> acceptance = acceptance(problems.getResult());
 
-        List<Map<Long, Long>> maps = discussMapper.batchSelectCountDiscuss(problems.getResult());
+        List<Map<String, Long>> maps = discussMapper.batchSelectCountDiscuss(problems.getResult());
 
         //获得评论数
-        HashMap<Long, Long> problemDiscussCountMap = new HashMap();
-        maps.stream().forEach(p -> problemDiscussCountMap.put(p.get("problemid"), p.get("count")));
+        HashMap<Long, Long> problemDiscussCountMap = new HashMap<>();
+        maps.forEach(p -> problemDiscussCountMap.put(p.get("problemid"), p.get("count")));
 
         List<Integer> sumbitSuccessProblemIds = null;
         List<Integer> sumbitProblemIdIds = null;
@@ -88,7 +104,7 @@ public class ProblemServiceImpl implements ProblemService {
             //评论次数
             problemListVO.setDiscusscount(
                     problemDiscussCountMap.get(
-                            Long.valueOf(problem.getId())) == null ? 0L : problemDiscussCountMap.get(Long.valueOf(problem.getId())));
+                            Long.valueOf(problem.getId())) == null ? 0L : problemDiscussCountMap.get(problem.getId()));
 
             //设置正确率
             String acceptanceStr = acceptance.get(problem.getId());
@@ -111,7 +127,7 @@ public class ProblemServiceImpl implements ProblemService {
     @Override
     public PageData<List<ProblemListVO>> listProblem(String owner, String username, String category, int pageNum, int pageCount) {
 
-        Page<Problem> problems = PageHelper.startPage(pageNum, pageCount)
+        Page<Problem> problems = PageMethod.startPage(pageNum, pageCount)
                 .doSelectPage(() -> problemMapper.selectProblem(category, owner));
 
         return setProblemVOData(username, problems);
@@ -131,7 +147,7 @@ public class ProblemServiceImpl implements ProblemService {
 
         //当前用户是否喜欢
         if (username != null) {
-            problemVO.setLike(favoriteMapper.selectCountUserNameProblem(problemid, username) > 0 ? true : false);//当前用户是否喜欢
+            problemVO.setLike(favoriteMapper.selectCountUserNameProblem(problemid, username) > 0);//当前用户是否喜欢
         }
 
         //收藏数
@@ -147,8 +163,9 @@ public class ProblemServiceImpl implements ProblemService {
         //初始化代码
         ProblemCode problemCode = null;
         try {
-            problemCode = JSONObject.parseObject(problem.getInitCode(), ProblemCode.class);
+            problemCode = JSON.parseObject(problem.getInitCode(), ProblemCode.class);
         } catch (Exception e) {
+            log.error("JSON转换ProblemCode错误", e);
         }
         if (problemCode != null) {
 
@@ -169,7 +186,7 @@ public class ProblemServiceImpl implements ProblemService {
         int i = problemMapper.insertProblem(problem);
         //验证categoryid是否存在
 
-        if (categories.size() != 0) {
+        if (categories.isEmpty()) {
             categoryMapper.insertProblemCategory(problem, categories);
         }
 
@@ -183,7 +200,7 @@ public class ProblemServiceImpl implements ProblemService {
     public HashMap<Integer, String> acceptance(List<Problem> problems) {
         HashMap<Integer, String> result = new HashMap<>();
         List<ProblemAcceptance> acceptance = submitMapper.acceptance(problems);
-        acceptance.stream().forEach(p -> {
+        acceptance.forEach(p -> {
             Double acceptance100 = p.getAcceptance() * 100;
             String acceptanceStr = acceptance100.intValue() + " %";
             result.put(p.getProblemid(), acceptanceStr);

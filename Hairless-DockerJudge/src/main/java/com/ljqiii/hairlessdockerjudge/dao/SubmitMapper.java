@@ -4,6 +4,8 @@ package com.ljqiii.hairlessdockerjudge.dao;
 import com.ljqiii.hairlesscommon.domain.Submit;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 @Mapper
 public interface SubmitMapper {
 
@@ -16,6 +18,8 @@ public interface SubmitMapper {
 
     @Update("update submit set judgeclient=#{client} where id=#{id}")
     int updateJudgeClient(@Param("id") int id, @Param("client") int client);
+
+    List<Submit> selectSubmit(@Param("submitids") List<Integer> submitids);
 
 
 }

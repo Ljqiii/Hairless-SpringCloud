@@ -5,6 +5,11 @@
 <mapper namespace="com.ljqiii.hairlesscompetition.dao.CompetitionProblemMapper">
 
 
+    <resultMap id="ints" type="java.lang.Integer">
+        <result column="competitionProblemId" property="value"/>
+    </resultMap>
+
+
     <insert id="insertCompetitionProblem">
         insert into competition_problem(competitionId,competitionProblemId)
         values
@@ -12,4 +17,9 @@
             (#{competition.id},#{item})
         </foreach>
     </insert>
+
+    <select id="selectCompetitionProblemIds" resultMap="ints">
+        select competitionProblemId from competition_problem where competitionId=#{competition.id}
+    </select>
+
 </mapper>

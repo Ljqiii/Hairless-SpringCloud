@@ -2,10 +2,13 @@ package com.ljqiii.hairlesscompetition.service;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.page.PageMethod;
+import com.ljqiii.hairlesscommon.apiform.GetProblemVoForm;
 import com.ljqiii.hairlesscommon.domain.Competition;
 import com.ljqiii.hairlesscommon.vo.CompetitionVO;
 import com.ljqiii.hairlesscommon.vo.PageData;
 import com.ljqiii.hairlesscommon.vo.PageInfo;
+import com.ljqiii.hairlesscommon.vo.ProblemListVO;
+import com.ljqiii.hairlesscompetition.client.MainClient;
 import com.ljqiii.hairlesscompetition.dao.CompetitionMapper;
 import com.ljqiii.hairlesscompetition.dao.CompetitionProblemMapper;
 import com.ljqiii.hairlesscompetition.dao.CompetitionUserMapper;
@@ -32,6 +35,9 @@ public class CompetitionService {
 
     @Autowired
     CompetitionProblemMapper competitionProblemMapper;
+
+    @Autowired
+    MainClient mainClient;
 
 
     public PageData<List<CompetitionVO>> listCompetition(Integer competitionId, String createUserName, String usernameIfJoin, Boolean includeDel, int pageNum, int pageCount) {
@@ -88,14 +94,28 @@ public class CompetitionService {
     }
 
     /**
-     * 有没有提交代码参加资格
+     * 有没有加入竞赛
      *
      * @param competitionId
      * @param username
      * @return
      */
-    public boolean havCompetitionPrivileges(Integer competitionId, String username) {
+    public boolean isJoinedCompetition(Integer competitionId, String username) {
         Competition competition = competitionMapper.selecetCompetitionById(competitionId);
         return competitionUserMapper.selectCountCompetitionUser(competition, username) >= 1;
     }
+
+
+    public PageData<List<ProblemListVO>> getProblemSet(int competitionById, String username) {
+        Competition competition = competitionMapper.selecetCompetitionById(competitionById);
+
+        GetProblemVoForm getProblemVoForm = GetProblemVoForm.builder().problemids(
+                competitionProblemMapper.selectCompetitionProblemIds(competition))
+                .username(username)
+                .build();
+
+        PageData<List<ProblemListVO>> problemVOs = mainClient.getProblems(getProblemVoForm);
+        return problemVOs;
+    }
+
 }

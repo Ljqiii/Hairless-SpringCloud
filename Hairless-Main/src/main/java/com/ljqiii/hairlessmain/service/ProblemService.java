@@ -13,12 +13,14 @@ public interface ProblemService {
 
     PageData<List<ProblemListVO>> setProblemVOData(String username, Page<Problem> problems);
 
-    PageData<List<ProblemListVO>> listProblem( String owner,String username, String category, int pageNum, int pageCount);
+    PageData<List<ProblemListVO>> listProblem(String owner, String username, String category, int pageNum, int pageCount);
 
     ProblemVO getProblem(String username, int problemid);
 
     boolean isVipProblem(int problemid);
 
-    Integer newProblem(Problem problem,List<Category> categories );
+    Integer newProblem(Problem problem, List<Category> categories);
+
+    PageData<List<ProblemListVO>> getProblemByProblemIds(List<Integer> problemids, String username, int pageNum, int pageCount);
 
 }

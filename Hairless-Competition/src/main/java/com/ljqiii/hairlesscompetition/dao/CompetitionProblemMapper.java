@@ -12,4 +12,5 @@ public interface CompetitionProblemMapper {
 
     int insertCompetitionProblem(@Param("competition") Competition competition, @Param("problemIds") List<Integer> problemIds);
 
+    List<Integer> selectCompetitionProblemIds(@Param("competition") Competition competition);
 }

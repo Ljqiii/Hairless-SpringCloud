@@ -11,6 +11,8 @@ public interface ProblemMapper {
 
     List<Problem> selectProblem(@Param("category") String category, @Param("owner") String owner);
 
+    List<Problem> selectProblemByProblemIds(@Param("problemids") List<Integer> problemids);
+
     @Select("select * from problem where id=#{id} limit 1")
     Problem selectProblemById(@Param("id") int id);
 

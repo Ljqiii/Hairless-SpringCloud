@@ -22,6 +22,15 @@
         order by problem.id
 
     </select>
+    <select id="selectProblemByProblemIds" resultType="com.ljqiii.hairlesscommon.domain.Problem">
+
+        select * from problem
+        WHERE problem.id in
+        <foreach item="item" collection="problemids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        order by problem.id
+    </select>
 
 
 </mapper>
