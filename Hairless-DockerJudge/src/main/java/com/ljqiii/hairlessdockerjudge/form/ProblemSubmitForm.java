@@ -1,6 +1,5 @@
 package com.ljqiii.hairlessdockerjudge.form;
 
-import com.alibaba.fastjson.JSONObject;
 import com.ljqiii.hairlesscommon.domain.ProblemCode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,5 +13,6 @@ import java.io.Serializable;
 public class ProblemSubmitForm implements Serializable {
 
     int problemId;
+    Integer competitionId;
     ProblemCode problemCode;
 }

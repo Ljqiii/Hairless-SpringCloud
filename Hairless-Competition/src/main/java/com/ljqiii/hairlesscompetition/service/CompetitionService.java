@@ -11,6 +11,7 @@ import com.ljqiii.hairlesscommon.vo.ProblemListVO;
 import com.ljqiii.hairlesscompetition.client.MainClient;
 import com.ljqiii.hairlesscompetition.dao.CompetitionMapper;
 import com.ljqiii.hairlesscompetition.dao.CompetitionProblemMapper;
+import com.ljqiii.hairlesscompetition.dao.CompetitionSubmitMapper;
 import com.ljqiii.hairlesscompetition.dao.CompetitionUserMapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ public class CompetitionService {
 
     @Autowired
     CompetitionProblemMapper competitionProblemMapper;
+
+    @Autowired
+    CompetitionSubmitMapper competitionSubmitMapper;
 
     @Autowired
     MainClient mainClient;
@@ -118,4 +122,13 @@ public class CompetitionService {
         return problemVOs;
     }
 
+    //添加提交id到竞赛表
+    public void addSubmit(int submitId, int competitionId) {
+        Competition competition = competitionMapper.selecetCompetitionById(competitionId);
+
+        if (competition == null) {
+            throw new IllegalArgumentException("竞赛id" + competitionId + "不存在");
+        }
+        competitionSubmitMapper.insertCompetitionSubmitBySubmitId(competition, submitId);
+    }
 }
