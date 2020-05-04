@@ -20,10 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -47,7 +44,7 @@ public class ProblemServiceImpl implements ProblemService {
 
     public PageData<List<ProblemListVO>> getProblemByProblemIds(List<Integer> problemids, String username, int pageNum, int pageCount) {
         if (problemids.isEmpty()) {
-            return new PageData<>();
+            return setProblemVOData(username, new Page<>());
         } else {
             Page<Problem> problems = PageMethod.startPage(pageNum, pageCount)
                     .doSelectPage(() -> problemMapper.selectProblemByProblemIds(problemids));
@@ -65,6 +62,7 @@ public class ProblemServiceImpl implements ProblemService {
                     .pageNum(1)
                     .total(0)
                     .build());
+            pageData.setContent(new ArrayList<>());
             return pageData;
         }
 
@@ -104,7 +102,7 @@ public class ProblemServiceImpl implements ProblemService {
             //评论次数
             problemListVO.setDiscusscount(
                     problemDiscussCountMap.get(
-                            Long.valueOf(problem.getId())) == null ? 0L : problemDiscussCountMap.get(problem.getId()));
+                            Long.valueOf(problem.getId())) == null ? 0L : problemDiscussCountMap.get(Long.valueOf(problem.getId())));
 
             //设置正确率
             String acceptanceStr = acceptance.get(problem.getId());
