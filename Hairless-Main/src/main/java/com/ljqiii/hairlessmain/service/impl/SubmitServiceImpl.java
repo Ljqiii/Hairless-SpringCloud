@@ -7,15 +7,13 @@ import com.ljqiii.hairlesscommon.vo.SubmitedItemVO;
 import com.ljqiii.hairlessmain.dao.ProblemMapper;
 import com.ljqiii.hairlessmain.dao.SubmitMapper;
 import com.ljqiii.hairlessmain.service.SubmitService;
-import org.apache.commons.lang.time.DateUtils;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.ljqiii.hairlesscommon.utils.Submit2VOUtils.convertSubmit2VO;
 
 @Service
 public class SubmitServiceImpl implements SubmitService {
@@ -47,20 +45,8 @@ public class SubmitServiceImpl implements SubmitService {
         if (problem == null) {
             throw new IllegalArgumentException("问题不存在");
         }
-        SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
         List<Submit> submits = submitMapper.selectAllSubmitByUserNameAndProblem(username, problem);
-        List<SubmitedItemVO> submitedItemVOS = new ArrayList<>();
-        submits.stream().forEach(s -> {
-
-            SubmitedItemVO submitedItemVO = SubmitedItemVO.builder()
-                    .id(s.getId())
-                    .problemid(s.getProblemid())
-                    .submitedTime(dateFmt.format(s.getSubmitedTime()))
-                    .result(s.getResult())
-                    .build();
-            submitedItemVOS.add(submitedItemVO);
-        });
-
-        return submitedItemVOS;
+        return convertSubmit2VO(submits);
     }
+
 }
