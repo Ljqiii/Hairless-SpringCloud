@@ -1,8 +1,8 @@
 package com.ljqiii.hairlessaccount.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.ljqiii.hairlessaccount.dao.UserMapper;
 import com.ljqiii.hairlessaccount.service.AccountService;
+import com.ljqiii.hairlessaccount.service.VipBillService;
 import com.ljqiii.hairlesscommon.domain.User;
 import com.ljqiii.hairlesscommon.domain.amqpdomain.LoginInfo;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -25,6 +25,9 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    VipBillService vipBillService;
+
     @Override
     public void sendLogin(String username, Date loginTime) {
         LoginInfo loginInfo = LoginInfo.builder().username(username).logintime(loginTime).build();
@@ -38,7 +41,10 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public User getUserByUserName(String username) {
-        return userMapper.selecetUserByUserName(username);
+        User user = userMapper.selecetUserByUserName(username);
+        boolean vipNow = vipBillService.isVipNow(username);
+        user.setVip(vipNow);
+        return user;
     }
 
     @Override

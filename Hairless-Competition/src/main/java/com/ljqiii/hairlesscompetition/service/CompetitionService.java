@@ -14,6 +14,7 @@ import com.ljqiii.hairlesscompetition.dao.CompetitionProblemMapper;
 import com.ljqiii.hairlesscompetition.dao.CompetitionSubmitMapper;
 import com.ljqiii.hairlesscompetition.dao.CompetitionUserMapper;
 import org.apache.commons.lang.StringUtils;
+import org.quartz.JobDataMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,9 @@ public class CompetitionService {
     @Autowired
     MainClient mainClient;
 
+    @Autowired
+    QuartzSchedulerService quartzSchedulerService;
+
 
     public PageData<List<CompetitionVO>> listCompetition(Integer competitionId, String createUserName, String usernameIfJoin, Boolean includeDel, int pageNum, int pageCount) {
         PageData<List<CompetitionVO>> pageData = new PageData<>();
@@ -57,6 +61,19 @@ public class CompetitionService {
         return pageData;
     }
 
+    /**
+     * 新竞赛
+     *
+     * @param title
+     * @param description
+     * @param createUserName
+     * @param isPublic
+     * @param password
+     * @param startTime
+     * @param endTime
+     * @param problemIds
+     * @return
+     */
     @Transactional
     public int newCompetition(String title, String description, String createUserName, boolean isPublic,
                               String password, Date startTime, Date endTime, List<Integer> problemIds) {
@@ -70,6 +87,12 @@ public class CompetitionService {
                 .build();
         competitionMapper.insertCompetition(competition);
         competitionProblemMapper.insertCompetitionProblem(competition, problemIds);
+        JobDataMap dataMap = new JobDataMap();
+
+        dataMap.put("competitionId", competition.getId());
+        quartzSchedulerService.addSimpleJob(CompetitionLeaderService.class, "LeaderCalc_" + competition.getId(), "competitionLeaderBoardCalc", dataMap, startTime, endTime, 60);
+
+
         return competition.getId();
     }
 
