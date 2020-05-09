@@ -212,7 +212,7 @@ public class CompetitionLeaderService extends QuartzJobBean {
         competitionProblemIds.sort((o1, o2) -> o1 - o2);
         JSONArray leaderBoardMeta = new JSONArray();
         leaderBoardMeta.add(newMetaItem("排名", "rank"));
-        leaderBoardMeta.add(newMetaItem("用户名", "username"));
+        leaderBoardMeta.add(newMetaItem("用户名", "userName"));
         leaderBoardMeta.add(newMetaItem("昵称", "userNickName"));
         leaderBoardMeta.add(newMetaItem("正确数量", "solved"));
 
