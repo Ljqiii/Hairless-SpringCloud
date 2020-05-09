@@ -14,7 +14,7 @@ public interface CompetitionLeaderBoardMapper {
     @Insert("insert into competition_leaderboard(competitionid,tablecontentjson,tablemetajson)values (#{competition.id},#{tableContentJson},#{tableMetaJson} )")
     int insertInfo(@Param("competition") Competition competition, @Param("tableContentJson") String tableContentJson, @Param("tableMetaJson") String tableMetaJson);
 
-    @Select("select tablecontentjson,tablemetajson from competition_leaderboard where competitionid=#{competition.id}")
+    @Select("select tablecontentjson,tablemetajson from competition_leaderboard where competitionid=#{competition.id} and isdel=0")
     HashMap<String, String> selectLeaderBoardByCompetition(@Param("competition") Competition competition);
 
 }
