@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
+
 @SpringBootTest
 class CompetitionLeaderServiceTest {
 
@@ -36,7 +38,7 @@ class CompetitionLeaderServiceTest {
 
     @Test
     void generateLeaderBoardMetaInfo() {
-        JSONArray objects = competitionLeaderService.generateLeaderBoardMetaInfo(competition);
+        JSONArray objects = competitionLeaderService.generateLeaderBoardMetaInfo(competition,new ArrayList<>());
         Assert.assertNotNull(objects);
     }
 

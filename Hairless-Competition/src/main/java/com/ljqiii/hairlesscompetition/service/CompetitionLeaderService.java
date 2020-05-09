@@ -139,7 +139,7 @@ public class CompetitionLeaderService extends QuartzJobBean {
         ArrayList<LeaderBoardVO> leaderBoardVOS = convert2LeaderBoardItemVO(leaderBoard);
         String s1 = JSON.toJSONString(leaderBoardVOS);
         competitionLeaderBoardMapper.softDeleteInfoByCompetitionId(competition);
-        competitionLeaderBoardMapper.insertInfo(competition, s1, generateLeaderBoardMetaInfo(competition).toJSONString());
+        competitionLeaderBoardMapper.insertInfo(competition, s1, generateLeaderBoardMetaInfo(competition, submits).toJSONString());
         int a = 1;
     }
 
@@ -190,6 +190,12 @@ public class CompetitionLeaderService extends QuartzJobBean {
     }
 
 
+    /**
+     * 计算firstblood
+     *
+     * @param submits
+     * @return
+     */
     HashMap<Integer, String> calcFirstBlood(List<Submit> submits) {
         HashMap<Integer, String> firstBlood = new HashMap<>();
         Map<Integer, List<Submit>> groupByProblemId = submits.stream().collect(Collectors.groupingBy(Submit::getProblemid));
@@ -207,7 +213,16 @@ public class CompetitionLeaderService extends QuartzJobBean {
      * @param competition
      * @return
      */
-    public JSONArray generateLeaderBoardMetaInfo(Competition competition) {
+    public JSONArray generateLeaderBoardMetaInfo(Competition competition, List<Submit> submits) {
+
+        HashMap<Integer, String> correctRate = new HashMap<>();
+        Map<Integer, List<Submit>> groupByProblemId = submits.stream().collect(Collectors.groupingBy(Submit::getProblemid));
+        groupByProblemId.forEach((problemid, probelmSubmitList) -> {
+            long submitCount = probelmSubmitList.stream().count();
+            long successCount = probelmSubmitList.stream().filter(s -> s.getResult().equals("success")).count();
+            correctRate.put(problemid, "(" + successCount + "/" + submitCount + ")");
+        });
+
         List<Integer> competitionProblemIds = competitionProblemMapper.selectCompetitionProblemIds(competition);
         competitionProblemIds.sort((o1, o2) -> o1 - o2);
         JSONArray leaderBoardMeta = new JSONArray();
@@ -217,7 +232,7 @@ public class CompetitionLeaderService extends QuartzJobBean {
         leaderBoardMeta.add(newMetaItem("正确数量", "solved"));
 
         for (Integer competitionProblemId : competitionProblemIds) {
-            leaderBoardMeta.add(newMetaItem(String.valueOf(competitionProblemId), competitionProblemId + "_costTime"));
+            leaderBoardMeta.add(newMetaItem(competitionProblemId + " " + correctRate.get(competitionProblemId), competitionProblemId + "_costTime"));
         }
         return leaderBoardMeta;
     }
