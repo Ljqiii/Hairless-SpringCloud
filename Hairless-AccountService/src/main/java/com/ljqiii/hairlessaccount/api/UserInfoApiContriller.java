@@ -14,6 +14,7 @@ public class UserInfoApiContriller {
     @Autowired
     AccountService accountService;
 
+//    @PreAuthorize("#oauth2.hasScope('server')")
     @PostMapping("/getUserInfo")
     public User getUserInfo(@RequestBody String username) {
         return accountService.getUserByUserName(username);

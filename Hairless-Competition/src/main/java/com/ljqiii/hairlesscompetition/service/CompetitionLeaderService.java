@@ -16,6 +16,7 @@ import com.ljqiii.hairlesscompetition.dao.CompetitionProblemMapper;
 import com.ljqiii.hairlesscompetition.dao.CompetitionSubmitMapper;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -82,7 +83,7 @@ public class CompetitionLeaderService extends QuartzJobBean {
         HashMap<Integer, String> firstBlood = calcFirstBlood(submits);
         LeaderBoard leaderBoard = new LeaderBoard();
 
-        submits.forEach(submit -> {
+        submits.stream().filter(s -> StringUtils.isNotEmpty(s.getResult())).forEach(submit -> {
 
             LeaderBoard.LeaderBoardItem leaderBoardItem = leaderBoard.findItemByUserName(submit.getUsername());
 
