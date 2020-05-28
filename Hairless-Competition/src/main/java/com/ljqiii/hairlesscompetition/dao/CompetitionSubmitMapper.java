@@ -21,6 +21,6 @@ public interface CompetitionSubmitMapper {
     @Select("select submitId from competition_submit where competitionId=#{competitionId}")
     List<Integer> selectSubmitIdbycompetitionId(@Param("competitionId") Integer competitionId);
 
-    @Select("select submitId from competition_submit,submit where competition_submit.competitionId=submit.id and submit.username=#{username} and competition_submit.competitionId=#{competitionId}")
+    @Select("select submit.id from competition_submit,submit where competition_submit.submitId=submit.id and submit.username=#{username} and competition_submit.competitionId=#{competitionId}")
     List<Integer> selectSubmitIdbycompetitionIdAndUserName(@Param("competitionId") Integer competitionId, @Param("username") String username);
 }
