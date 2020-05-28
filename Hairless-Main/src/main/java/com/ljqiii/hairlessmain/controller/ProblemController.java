@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ljqiii.hairlesscommon.domain.Category;
 import com.ljqiii.hairlesscommon.domain.Problem;
+import com.ljqiii.hairlesscommon.domain.ProblemAnswer;
 import com.ljqiii.hairlesscommon.domain.ProblemTemplate;
 import com.ljqiii.hairlesscommon.enums.ResultEnum;
 import com.ljqiii.hairlesscommon.vo.HairlessResponse;
@@ -12,12 +13,14 @@ import com.ljqiii.hairlesscommon.vo.PageData;
 import com.ljqiii.hairlesscommon.vo.ProblemListVO;
 import com.ljqiii.hairlesscommon.vo.ProblemVO;
 import com.ljqiii.hairlessmain.form.NewProblemForm;
+import com.ljqiii.hairlessmain.service.ProblemAnswerService;
 import com.ljqiii.hairlessmain.service.ProblemService;
 import com.ljqiii.hairlessmain.service.ProblemTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -31,6 +34,8 @@ public class ProblemController {
     ProblemService problemService;
     @Autowired
     ProblemTemplateService problemTemplateService;
+    @Autowired
+    ProblemAnswerService problemAnswerService;
 
 
     @GetMapping("/problemlist")
@@ -105,6 +110,7 @@ public class ProblemController {
 
     @PostMapping("/newproblem")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_TEACHER')")
+    @Transactional
     public HairlessResponse<JSONObject> newProblem(
             @RequestBody NewProblemForm form,
             Principal principal) {
@@ -127,6 +133,8 @@ public class ProblemController {
                 .build();
 
         Integer problemId = problemService.newProblem(problem, categories);
+        problemAnswerService.newProblemAnswer(
+                ProblemAnswer.builder().problemId(problemId).answercontent(form.getAnswer()).username(principal.getName()).build());
 
         HairlessResponse<JSONObject> response = new HairlessResponse<>();
         JSONObject data = new JSONObject();

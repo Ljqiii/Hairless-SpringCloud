@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProblemAnswer {
+    int id;
     int problemId;
     String username;
     String answercontent;

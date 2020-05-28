@@ -2,6 +2,7 @@ package com.ljqiii.hairlessmain.dao;
 
 import com.ljqiii.hairlesscommon.domain.Category;
 import com.ljqiii.hairlesscommon.domain.Problem;
+import com.ljqiii.hairlesscommon.domain.ProblemAnswer;
 import com.ljqiii.hairlesscommon.vo.CorrectLeaderboard;
 import com.ljqiii.hairlessmain.dataobject.ProblemAcceptance;
 import org.junit.Assert;
@@ -36,6 +37,11 @@ public class MapperTest {
     @Autowired
     FavoriteMapper favoriteMapper;
 
+    @Autowired
+    ProblemAnswerMapper problemAnswerMapper;
+
+
+
     @Before
     public void setUp() throws Exception {
     }
@@ -63,6 +69,19 @@ public class MapperTest {
     public void selectCateGory() {
         List<Category> categories = categoryMapper.selectCateGory();
         Assert.assertNotNull(categories);
+    }
+
+    @Test
+    public void insertProblemAnswer() {
+        ProblemAnswer build = ProblemAnswer.builder().answercontent("content").problemId(1)
+                .username("aaa").build();
+        int i = problemAnswerMapper.insertProblemAnswer(build);
+        Assert.assertEquals(i,1);
+    }
+    @Test
+    public void selectProblemAnswer() {
+        List<ProblemAnswer> problemAnswers = problemAnswerMapper.selectProblemAnswerByProblemid(1);
+        Assert.assertNotNull(problemAnswers);
     }
 
     @Test

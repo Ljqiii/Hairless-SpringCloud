@@ -184,7 +184,7 @@ public class ProblemServiceImpl implements ProblemService {
         int i = problemMapper.insertProblem(problem);
         //验证categoryid是否存在
 
-        if (categories.isEmpty()) {
+        if (!categories.isEmpty()) {
             categoryMapper.insertProblemCategory(problem, categories);
         }
 
