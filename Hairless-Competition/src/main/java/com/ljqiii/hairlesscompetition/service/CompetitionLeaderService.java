@@ -98,7 +98,7 @@ public class CompetitionLeaderService extends QuartzJobBean {
                 LeaderBoard.SubmitedProblemItem submitedProblemItem = LeaderBoard.SubmitedProblemItem.builder().
                         isSucess(submit.getResult().equals("success"))
                         .problemId(submit.getProblemid())
-                        .firstblood(false)
+                        .firstblood(submit.getResult().equals("success") && (firstBlood.get(submit.getProblemid()) != null && firstBlood.get(submit.getProblemid()).equals(submit.getUsername())))
                         .timecost(submit.getResult().equals("success") ?
                                 (submit.getSubmitedTime().getTime() - competition.getStartTime().getTime()) : null)
                         .waTimes(submit.getResult().equals("success") ? 0 : 1)
@@ -117,7 +117,7 @@ public class CompetitionLeaderService extends QuartzJobBean {
                     LeaderBoard.SubmitedProblemItem newSubmitedProblemItem = LeaderBoard.SubmitedProblemItem.builder().
                             isSucess(submit.getResult().equals("success"))
                             .problemId(submit.getProblemid())
-                            .firstblood(submit.getResult().equals("success") && firstBlood.get(submit.getProblemid()).equals(submit.getUsername()))
+                            .firstblood(submit.getResult().equals("success") && (firstBlood.get(submit.getProblemid()) != null) && firstBlood.get(submit.getProblemid()).equals(submit.getUsername()))
                             .timecost(submit.getResult().equals("success") ?
                                     (submit.getSubmitedTime().getTime() - competition.getStartTime().getTime()) : null)
                             .waTimes(submit.getResult().equals("success") ? 0 : 1)
