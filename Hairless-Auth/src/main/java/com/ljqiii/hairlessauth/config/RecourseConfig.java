@@ -11,6 +11,6 @@ public class RecourseConfig extends ResourceServerConfigurerAdapter {
         http
                 .anonymous()
                 .and()
-                .authorizeRequests().antMatchers("/register","/oauth**").permitAll();
+                .authorizeRequests().antMatchers("/clearJESSIONID","/register","/oauth**").permitAll();
     }
 }

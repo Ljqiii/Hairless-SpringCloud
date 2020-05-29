@@ -4,26 +4,24 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ljqiii.hairlessauth.dao.UserMapper;
 import com.ljqiii.hairlessauth.dao.VipBillMapper;
-import com.ljqiii.hairlessauth.service.UserService;
 import com.ljqiii.hairlessauth.form.UserReg;
+import com.ljqiii.hairlessauth.service.UserService;
 import com.ljqiii.hairlesscommon.constants.RoleConstants;
 import com.ljqiii.hairlesscommon.enums.ResultEnum;
 import com.ljqiii.hairlesscommon.exception.UserException;
 import com.ljqiii.hairlesscommon.vo.HairlessResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @Slf4j
@@ -36,6 +34,10 @@ public class Auth {
 
     @Autowired
     VipBillMapper vipBillMapper;
+
+    @Value("${hairless.home}")
+    String hairlessHome;
+
 
     @RequestMapping(value = "/userinfo", method = RequestMethod.GET)
     public JSONObject getUser(Principal principal) {
@@ -93,6 +95,18 @@ public class Auth {
             return response;
         }
     }
+
+    @GetMapping("/clearJSESSIONID")
+    public ModelAndView clearJESSIONID(HttpServletResponse response) {
+        ModelAndView modelAndView = new ModelAndView();
+        Cookie cookie = new Cookie("JSESSIONID", "");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+
+        modelAndView.setViewName("redirect:" + hairlessHome);
+        return modelAndView;
+    }
+
 
     @GetMapping("/test")
     public String test(Principal principal, HttpServletRequest request) {
