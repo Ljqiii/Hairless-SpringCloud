@@ -7,11 +7,6 @@
 
     </dependencies>
 
-    <parent>
-        <groupId>com.ljqiii</groupId>
-        <artifactId>hairless</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-    </parent>
 
     <groupId>com.ljqiii</groupId>
     <artifactId>hairless-commons</artifactId>
